@@ -1,5 +1,7 @@
 #include "seq.h"
 #include "../util/safe_array.h"
+#include "../util/midi/midi.h"
+#include "../util/midi/midi_enums.h"
 #include "../mcu_util/led_update.h"
 #include "../mcu_util/inputs.h"
 #include "stdint.h"
@@ -16,6 +18,15 @@ Seq seq = {
         120
 };
 
+Midi_note notes[SEQ_LEVELS] = {
+        C2,  //Bass drum
+        D2,  //Snare
+        Fs2, //Closed hi hat
+        As2, //Open hi hat
+        };
+
+Midi_channel channel = CH10;
+Midi_cc_number cc = CC_CH_046;
 #define max_parts 8
 
 u16 bpm_to_4th_ms(u8 bpm) {
@@ -74,8 +85,26 @@ void animate_top_bar() {
 
     }
 }
+void stop_playback() {
+    seq.playing = false;
+    loop(x, SEQ_LEVELS)
+    {
+        send_note_off(CH10, notes[x], 127);
+    }
 
-void update_seq_position() {
+}
+
+void start_playback() {
+    seq.playing = true;
+    //TODO start needs to continue where it left off
+    u16 sixteenth = bpm_to_4th_ms(seq.bpm) / 4;
+    seq.start_ms = seq.current_ms + (sixteenth * seq.position.data);
+}
+
+/**
+ * Returns true if position is update, false if it's the same
+ */
+bool update_seq_position() {
     if (seq.current_ms < seq.start_ms) {
         printf("Invalid sequencer status, current behind start ms, resetting start to current\r\n");
         seq.start_ms = seq.current_ms;
@@ -83,6 +112,7 @@ void update_seq_position() {
     u16 sixteenth = bpm_to_4th_ms(seq.bpm) / 4;
     u32 playback_ms = seq.current_ms - seq.start_ms;
     u16 current_pos = playback_ms / sixteenth;
+    bool result = current_pos != seq.position.data;
     if (current_pos >= 32) {
 
         seq.start_ms += sixteenth * 32;
@@ -90,13 +120,24 @@ void update_seq_position() {
     } else {
         counter_set(current_pos, &seq.position);
     }
+    return result;
 }
 void update_seq() {
 
     if (seq.playing) {
-        update_seq_position();
+        if (update_seq_position()) send_midi();
     }
-    //TODO indicate part change
+
+    if (button_pressed[0]) {
+        button_pressed[0]--;
+        stop_playback();
+    }
+
+    if (button_pressed[1]) {
+        button_pressed[1]--;
+        start_playback();
+    }
+
     if (button_pressed[5]) {
         button_pressed[5]--;
         seq_next_part();
@@ -214,3 +255,31 @@ void animate_flash(u8 data, Seq_animation * anim, bool light_variant) {
 
 }
 
+void send_midi() {
+
+    loop(x,seq.current_level.data_max +1)
+    {
+
+        Seq_event * ev = &seq.points[x][seq.position.data];
+        //Send note off if previous was on
+        if (seq.position.data == 0) {
+            if (seq.points[x][seq.position.data_max].velocity) {
+                send_note_off(channel, notes[x], 127);
+            }
+        } else {
+            if (seq.points[x][seq.position.data - 1].velocity) {
+                send_note_off(channel, notes[x], 127);
+            }
+        }
+        //Send not on if velocity is non zero
+        if (ev->velocity) {
+            u8 u_pitch = (ev->pitch + ((u16) (INT8_MAX - 1))) > 1;
+
+            if (ev->pitch) send_cc(channel, ((u8) cc) + x, u_pitch);
+
+            send_note_on(channel, notes[x], ev->velocity >> 1);
+        }
+
+    }
+
+}

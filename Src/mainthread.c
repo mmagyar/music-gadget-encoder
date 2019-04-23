@@ -7,6 +7,8 @@
 #include  <sys/unistd.h> // STDOUT_FILENO, STDERR_FILENO
 #include "lib/printf.h"
 #include "seq/seq.h"
+#include "mcu_util/mux.h"
+#include  "util/midi/midi.h"
 
 Task tasks[max_task_count] = { };
 u32 ms_counter = 0;
@@ -15,10 +17,19 @@ const u8 TASK_INDEX_LED_UPDATE = 0;
 const u8 TASK_INDEX_SEQ_UPATE = 1;
 void calculate_task_time(Task * task);
 
+void test_task() {
+//    send_cc(CH03, CC_CH_012, 53);
+}
+
 void init_tasks() {
+
+    midi_bytes_ready_to_send = send_buffer_uart_3;
+
     tasks[TASK_INDEX_LED_UPDATE].task = &update_display;
     tasks[TASK_INDEX_SEQ_UPATE].task = &update_seq;
     tasks[TASK_INDEX_SEQ_UPATE].repeat_ms = 16;
+    tasks[2].repeat_ms = 250;
+    tasks[2].task = test_task;
 
 }
 char chr = 0;
@@ -66,7 +77,7 @@ void main_thread() {
         }
 
         if (button_pressed[0]) {
-            button_pressed[0]--;
+          //  button_pressed[0]--;
             printf("HELLO, loop time of led update: %d\r\n", (int) tasks[0].avg_time);
         }
 
@@ -122,8 +133,6 @@ void TIM3_IRQHandler(void)
     seq.current_ms = ms_counter;
     LL_TIM_ClearFlag_UPDATE(TIM3);
 }
-
-
 
 /**
  * @brief This function handles Hard fault interrupt.

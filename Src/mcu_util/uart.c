@@ -6,6 +6,13 @@
 def_Circular_buffer(uart_print, 8, 'p');
 def_Circular_buffer(uart_cmd, 8, 'c');
 
+Circular_buffer * uart_3_buffer = NULL;
+void send_buffer_uart_3(Circular_buffer * uart_3) {
+    uart_3_buffer = uart_3;
+    LL_USART_EnableIT_TXE_TXFNF(USART3);
+
+}
+
 /**
  * Print to UART
  * Returns the number of written bytes
@@ -85,6 +92,19 @@ void uart_4_tx() {
         LL_USART_DisableIT_TXE_TXFNF(USART4);
     }
 }
+
+void uart_3_rx() {
+}
+void uart_3_tx() {
+    Buffer_read_result result = { 0, false };
+    get_from_buffer(uart_3_buffer, &result);
+    if (result.readSuccess) {
+        LL_USART_TransmitData8(USART3, result.data);
+    } else {
+        //Disable transmit interrupts when there are no new data to transmit
+        LL_USART_DisableIT_TXE_TXFNF(USART3);
+    }
+}
 /**
  * @brief This function handles USART3 and USART4 interrupts.
  */
@@ -96,6 +116,15 @@ void USART3_4_IRQHandler(void)
     },
     {
         uart_4_tx()
+        ;
+    })
+
+    UART_IRQ(3, {
+        uart_3_rx()
+        ;
+    },
+    {
+        uart_3_tx()
         ;
     })
 

@@ -41,6 +41,9 @@ typedef struct {
 void animate_flash(u8 data, Seq_animation * anim, bool light_variant);
 Seq_animation anim;
 
+
 Seq seq;
 void update_seq();
+
+void send_midi();
 #endif /* SEQ_SEQ_H_ */
