@@ -78,96 +78,59 @@
 /* USER CODE END EV */
 
 /******************************************************************************/
-/*           Cortex Processor Interruption and Exception Handlers          */
+/*           Cortex Processor Interruption and Exception Handlers          */ 
 /******************************************************************************/
 /**
- * @brief This function handles Non maskable interrupt.
- */
+  * @brief This function handles Non maskable interrupt.
+  */
 void NMI_Handler(void)
 {
-    /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
-    /* USER CODE END NonMaskableInt_IRQn 0 */
-    /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
 
-    /* USER CODE END NonMaskableInt_IRQn 1 */
+  /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
- * @brief This function handles Hard fault interrupt.
- */
-void HardFault_Handler(void)
-{
-    /* USER CODE BEGIN HardFault_IRQn 0 */
-
-    LL_SPI_TransmitData16(SPI1, 0xAAAA);
-    mux_off();
-
-    volatile int b = 0;
-    volatile int a_max = 0xFFFFF >> 1;
-    volatile int a = a_max;
-    volatile int p = 0;
-    /* USER CODE END HardFault_IRQn 0 */
-    while (1)
-    {
-        /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-        LL_GPIO_WriteOutputPort((GPIO_TypeDef *) mux_port[p],
-                mux_port[p]->ODR & ~mux_pin[p]);
-
-        LL_GPIO_WriteOutputPort((GPIO_TypeDef *) mux_port[p],
-                mux_port[p]->ODR | mux_pin[p]);
-
-        a++;
-        p++;
-        if (p > 9) p = 0;
-        if (a > a_max) {
-            a = 0;
-            LL_SPI_TransmitData16(SPI1, b > 0 ? (b > 1 ? 0xAAAA : 0xFFFF) : 0x5555);
-            b++;
-            if (b > 2) b = 0;
-        }
-        /* USER CODE END W1_HardFault_IRQn 0 */
-    }
-}
-
-/**
- * @brief This function handles System service call via SWI instruction.
- */
+  * @brief This function handles System service call via SWI instruction.
+  */
 void SVC_Handler(void)
 {
-    /* USER CODE BEGIN SVC_IRQn 0 */
+  /* USER CODE BEGIN SVC_IRQn 0 */
 
-    /* USER CODE END SVC_IRQn 0 */
-    /* USER CODE BEGIN SVC_IRQn 1 */
+  /* USER CODE END SVC_IRQn 0 */
+  /* USER CODE BEGIN SVC_IRQn 1 */
 
-    /* USER CODE END SVC_IRQn 1 */
+  /* USER CODE END SVC_IRQn 1 */
 }
 
 /**
- * @brief This function handles Pendable request for system service.
- */
+  * @brief This function handles Pendable request for system service.
+  */
 void PendSV_Handler(void)
 {
-    /* USER CODE BEGIN PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 0 */
 
-    /* USER CODE END PendSV_IRQn 0 */
-    /* USER CODE BEGIN PendSV_IRQn 1 */
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
 
-    /* USER CODE END PendSV_IRQn 1 */
+  /* USER CODE END PendSV_IRQn 1 */
 }
 
 /**
- * @brief This function handles System tick timer.
- */
+  * @brief This function handles System tick timer.
+  */
 void SysTick_Handler(void)
 {
-    /* USER CODE BEGIN SysTick_IRQn 0 */
+  /* USER CODE BEGIN SysTick_IRQn 0 */
 
-    /* USER CODE END SysTick_IRQn 0 */
+  /* USER CODE END SysTick_IRQn 0 */
+  
+  /* USER CODE BEGIN SysTick_IRQn 1 */
 
-    /* USER CODE BEGIN SysTick_IRQn 1 */
-
-    /* USER CODE END SysTick_IRQn 1 */
+  /* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -178,16 +141,16 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
- * @brief This function handles RCC global interrupt.
- */
+  * @brief This function handles RCC global interrupt.
+  */
 void RCC_IRQHandler(void)
 {
-    /* USER CODE BEGIN RCC_IRQn 0 */
+  /* USER CODE BEGIN RCC_IRQn 0 */
 
-    /* USER CODE END RCC_IRQn 0 */
-    /* USER CODE BEGIN RCC_IRQn 1 */
+  /* USER CODE END RCC_IRQn 0 */
+  /* USER CODE BEGIN RCC_IRQn 1 */
 
-    /* USER CODE END RCC_IRQn 1 */
+  /* USER CODE END RCC_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
