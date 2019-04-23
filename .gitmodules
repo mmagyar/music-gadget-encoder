@@ -1,0 +1,3 @@
+[submodule "Src/util"]
+	path = Src/util
+	url = git@github.com:mmagyar/mcu_util.git

@@ -1,0 +1,160 @@
+Configuration	digiControl2
+STM32CubeMX 	5.0.0
+Date	04/14/2019
+MCU	STM32G070CBTx
+
+
+
+PERIPHERALS	MODES	FUNCTIONS	PINS
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PF0-OSC_IN (PF0)
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PF1-OSC_OUT (PF1)
+SPI1	Transmit Only Master	SPI1_MOSI	PA7
+SPI1	Transmit Only Master	SPI1_SCK	PA5
+SPI1	Hardware NSS Output Signal	SPI1_NSS	PA4
+SYS	Serial Wire	SYS_SWCLK	PA14-BOOT0
+SYS	Serial Wire	SYS_SWDIO	PA13
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+USART1	Asynchronous	USART1_RX	PB7
+USART1	Asynchronous	USART1_TX	PB6
+USART2	Asynchronous	USART2_RX	PA3
+USART2	Asynchronous	USART2_TX	PA2
+USART3	Asynchronous	USART3_RX	PB11
+USART3	Asynchronous	USART3_TX	PB10
+USART4	Asynchronous	USART4_RX	PA1
+USART4	Asynchronous	USART4_TX	PA0
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+1	PC13	GPIO_Input	ENC_S_0
+2	PC14-OSC32_IN (PC14)	GPIO_Output	LED_MUX_0
+3	PC15-OSC32_OUT (PC15)	GPIO_Output	LED_MUX_1
+8	PF0-OSC_IN (PF0)	RCC_OSC_IN	
+9	PF1-OSC_OUT (PF1)	RCC_OSC_OUT	
+11	PA0	USART4_TX	
+12	PA1	USART4_RX	
+13	PA2	USART2_TX	
+14	PA3	USART2_RX	
+15	PA4	SPI1_NSS	
+16	PA5	SPI1_SCK	
+17	PA6*	SPI1_MISO	
+18	PA7	SPI1_MOSI	
+19	PB0	GPIO_Input	ENC_A_1
+20	PB1	GPIO_Input	ENC_B_1
+21	PB2	GPIO_Input	ENC_C_1
+22	PB10	USART3_TX	
+23	PB11	USART3_RX	
+24	PB12	GPIO_Input	ENC_B_2
+25	PB13	GPIO_Input	ENC_S_2
+26	PB14	GPIO_Output	LED_MUX_4
+27	PB15	GPIO_Output	LED_MUX_5
+28	PA8	GPIO_Input	USART2_DETECT
+29	PA9	GPIO_Input	ENC_A_3
+30	PC6	GPIO_Input	ENC_A_0
+31	PC7	GPIO_Input	ENC_B_0
+32	PA10	GPIO_Input	ENC_B_3
+33	PA11 [PA9]	GPIO_Input	ENC_S_3
+34	PA12 [PA10]	GPIO_Output	LED_MUX_6
+35	PA13	SYS_SWDIO	
+36	PA14-BOOT0	SYS_SWCLK	
+37	PA15	GPIO_Output	LED_MUX_7
+38	PD0	GPIO_Output	LED_MUX_8
+39	PD1	GPIO_Output	LED_MUX_9
+41	PD3	GPIO_Output	TEST_POINT
+42	PB3	GPIO_Output	LED_MUX_2
+43	PB4	GPIO_Output	LED_MUX_3
+44	PB5	GPIO_Input	BUTTONS
+45	PB6	USART1_TX	
+46	PB7	USART1_RX	
+47	PB8	GPIO_Input	USART1_DETECT
+48	PB9	GPIO_Input	ENC_A_2
+PERIPHERALS	MODES	FUNCTIONS	PINS
+RCC	Crystal/Ceramic Resonator	RCC_OSC_IN	PF0-OSC_IN (PF0)
+RCC	Crystal/Ceramic Resonator	RCC_OSC_OUT	PF1-OSC_OUT (PF1)
+SPI1	Transmit Only Master	SPI1_MOSI	PA7
+SPI1	Transmit Only Master	SPI1_SCK	PA5
+SPI1	Hardware NSS Output Signal	SPI1_NSS	PA4
+SYS	Serial Wire	SYS_SWCLK	PA14-BOOT0
+SYS	Serial Wire	SYS_SWDIO	PA13
+SYS	SysTick	SYS_VS_Systick	VP_SYS_VS_Systick
+USART1	Asynchronous	USART1_RX	PB7
+USART1	Asynchronous	USART1_TX	PB6
+USART2	Asynchronous	USART2_RX	PA3
+USART2	Asynchronous	USART2_TX	PA2
+USART3	Asynchronous	USART3_RX	PB11
+USART3	Asynchronous	USART3_TX	PB10
+USART4	Asynchronous	USART4_RX	PA1
+USART4	Asynchronous	USART4_TX	PA0
+
+
+
+Pin Nb	PINs	FUNCTIONs	LABELs
+1	PC13	GPIO_Input	ENC_S_0
+2	PC14-OSC32_IN (PC14)	GPIO_Output	LED_MUX_0
+3	PC15-OSC32_OUT (PC15)	GPIO_Output	LED_MUX_1
+8	PF0-OSC_IN (PF0)	RCC_OSC_IN	
+9	PF1-OSC_OUT (PF1)	RCC_OSC_OUT	
+11	PA0	USART4_TX	
+12	PA1	USART4_RX	
+13	PA2	USART2_TX	
+14	PA3	USART2_RX	
+15	PA4	SPI1_NSS	
+16	PA5	SPI1_SCK	
+17	PA6*	SPI1_MISO	
+18	PA7	SPI1_MOSI	
+19	PB0	GPIO_Input	ENC_A_1
+20	PB1	GPIO_Input	ENC_B_1
+21	PB2	GPIO_Input	ENC_C_1
+22	PB10	USART3_TX	
+23	PB11	USART3_RX	
+24	PB12	GPIO_Input	ENC_B_2
+25	PB13	GPIO_Input	ENC_S_2
+26	PB14	GPIO_Output	LED_MUX_4
+27	PB15	GPIO_Output	LED_MUX_5
+28	PA8	GPIO_Input	USART2_DETECT
+29	PA9	GPIO_Input	ENC_A_3
+30	PC6	GPIO_Input	ENC_A_0
+31	PC7	GPIO_Input	ENC_B_0
+32	PA10	GPIO_Input	ENC_B_3
+33	PA11 [PA9]	GPIO_Input	ENC_S_3
+34	PA12 [PA10]	GPIO_Output	LED_MUX_6
+35	PA13	SYS_SWDIO	
+36	PA14-BOOT0	SYS_SWCLK	
+37	PA15	GPIO_Output	LED_MUX_7
+38	PD0	GPIO_Output	LED_MUX_8
+39	PD1	GPIO_Output	LED_MUX_9
+41	PD3	GPIO_Output	TEST_POINT
+42	PB3	GPIO_Output	LED_MUX_2
+43	PB4	GPIO_Output	LED_MUX_3
+44	PB5	GPIO_Input	BUTTONS
+45	PB6	USART1_TX	
+46	PB7	USART1_RX	
+47	PB8	GPIO_Input	USART1_DETECT
+48	PB9	GPIO_Input	ENC_A_2
+
+
+
+SOFTWARE PROJECT
+
+Project Settings : 
+Project Name : digiControl2
+Project Folder : C:\code\STM32_workspace_9.2\digiControl2\digiControl2
+Toolchain / IDE : TrueSTUDIO
+Firmware Package Name and Version : STM32Cube FW_G0 V1.0.0
+
+
+Code Generation Settings : 
+STM32Cube Firmware Library Package : Copy only the necessary library files
+Generate peripheral initialization as a pair of '.c/.h' files per peripheral : Yes
+Backup previously generated files when re-generating : No
+Delete previously generated files when not re-generated : Yes
+Set all free pins as analog (to optimize the power consumption) : Yes
+
+
+Toolchains Settings : 
+Compiler Optimizations : 
+
+
+
+
+
