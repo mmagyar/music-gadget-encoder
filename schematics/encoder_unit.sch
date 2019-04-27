@@ -1,0 +1,1050 @@
+EESchema Schematic File Version 4
+LIBS:DigiCtrl2-cache
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 6
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:PEC12R-4225F-S0024 U2
+U 1 1 5C82E08B
+P 3150 1350
+AR Path="/5C82D708/5C82E08B" Ref="U2"  Part="1" 
+AR Path="/5C83CCD2/5C82E08B" Ref="U3"  Part="1" 
+AR Path="/5C8495D2/5C82E08B" Ref="U4"  Part="1" 
+AR Path="/5C8524DA/5C82E08B" Ref="U5"  Part="1" 
+F 0 "U2" H 3550 1615 50  0000 C CNN
+F 1 "PEC12R-4225F-S0024" H 3550 1524 50  0000 C CNN
+F 2 "footprints:ENCODER_PEC12R-4XXXF-SXXXX_1" H 3800 1450 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/PEC12R-4225F-S0024.pdf" H 3800 1350 50  0001 L CNN
+F 4 "Bourns 24 Pulse Incremental Mechanical Rotary Encoder with a 6 mm Flat Shaft, Through Hole" H 3800 1250 50  0001 L CNN "Description"
+F 5 "" H 3800 1150 50  0001 L CNN "Height"
+F 6 "652-PEC12R-4225F-S24" H 3800 1050 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=652-PEC12R-4225F-S24" H 3800 950 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Bourns" H 3800 850 50  0001 L CNN "Manufacturer_Name"
+F 9 "PEC12R-4225F-S0024" H 3800 750 50  0001 L CNN "Manufacturer_Part_Number"
+	1    3150 1350
+	1    0    0    -1  
+$EndComp
+Text HLabel 1650 1850 0    50   Input ~ 0
+GND
+Text HLabel 2600 600  0    50   Input ~ 0
+VCC
+Text HLabel 1650 1350 0    50   Output ~ 0
+ENC_A
+Text HLabel 1650 1550 0    50   Output ~ 0
+ENC_B
+$Comp
+L Device:R R9
+U 1 1 5C82E096
+P 3050 900
+AR Path="/5C82D708/5C82E096" Ref="R9"  Part="1" 
+AR Path="/5C83CCD2/5C82E096" Ref="R14"  Part="1" 
+AR Path="/5C8495D2/5C82E096" Ref="R19"  Part="1" 
+AR Path="/5C8524DA/5C82E096" Ref="R24"  Part="1" 
+F 0 "R9" H 3120 946 50  0000 L CNN
+F 1 "10K" H 3120 855 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 2980 900 50  0001 C CNN
+F 3 "~" H 3050 900 50  0001 C CNN
+	1    3050 900 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R8
+U 1 1 5C82E09D
+P 2750 900
+AR Path="/5C82D708/5C82E09D" Ref="R8"  Part="1" 
+AR Path="/5C83CCD2/5C82E09D" Ref="R13"  Part="1" 
+AR Path="/5C8495D2/5C82E09D" Ref="R18"  Part="1" 
+AR Path="/5C8524DA/5C82E09D" Ref="R23"  Part="1" 
+F 0 "R8" H 2820 946 50  0000 L CNN
+F 1 "10K" H 2820 855 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 2680 900 50  0001 C CNN
+F 3 "~" H 2750 900 50  0001 C CNN
+	1    2750 900 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 750  2750 600 
+Wire Wire Line
+	2750 600  2600 600 
+Connection ~ 2750 750 
+Wire Wire Line
+	2750 1050 2750 1550
+Wire Wire Line
+	2750 1550 3150 1550
+Wire Wire Line
+	3150 1350 3050 1350
+Wire Wire Line
+	3050 1350 3050 1050
+$Comp
+L Device:R R11
+U 1 1 5C82E0AB
+P 2750 1350
+AR Path="/5C82D708/5C82E0AB" Ref="R11"  Part="1" 
+AR Path="/5C83CCD2/5C82E0AB" Ref="R16"  Part="1" 
+AR Path="/5C8495D2/5C82E0AB" Ref="R21"  Part="1" 
+AR Path="/5C8524DA/5C82E0AB" Ref="R26"  Part="1" 
+F 0 "R11" V 2550 1250 50  0000 C CNN
+F 1 "10K" V 2650 1250 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 2680 1350 50  0001 C CNN
+F 3 "~" H 2750 1350 50  0001 C CNN
+	1    2750 1350
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R12
+U 1 1 5C82E0B2
+P 2600 1550
+AR Path="/5C82D708/5C82E0B2" Ref="R12"  Part="1" 
+AR Path="/5C83CCD2/5C82E0B2" Ref="R17"  Part="1" 
+AR Path="/5C8495D2/5C82E0B2" Ref="R22"  Part="1" 
+AR Path="/5C8524DA/5C82E0B2" Ref="R27"  Part="1" 
+F 0 "R12" V 2700 1550 50  0000 C CNN
+F 1 "10K" V 2800 1550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 2530 1550 50  0001 C CNN
+F 3 "~" H 2600 1550 50  0001 C CNN
+	1    2600 1550
+	0    1    1    0   
+$EndComp
+Connection ~ 2750 1550
+Wire Wire Line
+	2900 1350 3050 1350
+Connection ~ 3050 1350
+$Comp
+L Device:C C9
+U 1 1 5C82E0BC
+P 1800 1700
+AR Path="/5C82D708/5C82E0BC" Ref="C9"  Part="1" 
+AR Path="/5C83CCD2/5C82E0BC" Ref="C11"  Part="1" 
+AR Path="/5C8495D2/5C82E0BC" Ref="C13"  Part="1" 
+AR Path="/5C8524DA/5C82E0BC" Ref="C15"  Part="1" 
+F 0 "C9" H 1915 1746 50  0000 L CNN
+F 1 "10n" H 1915 1655 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 1838 1550 50  0001 C CNN
+F 3 "~" H 1800 1700 50  0001 C CNN
+	1    1800 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C8
+U 1 1 5C82E0C3
+P 2100 1500
+AR Path="/5C82D708/5C82E0C3" Ref="C8"  Part="1" 
+AR Path="/5C83CCD2/5C82E0C3" Ref="C10"  Part="1" 
+AR Path="/5C8495D2/5C82E0C3" Ref="C12"  Part="1" 
+AR Path="/5C8524DA/5C82E0C3" Ref="C14"  Part="1" 
+F 0 "C8" H 2250 1600 50  0000 L CNN
+F 1 "10n" H 2250 1500 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 2138 1350 50  0001 C CNN
+F 3 "~" H 2100 1500 50  0001 C CNN
+	1    2100 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 1350 2600 1350
+Wire Wire Line
+	2450 1550 1800 1550
+Wire Wire Line
+	2100 1650 2100 1850
+Wire Wire Line
+	2100 1850 1800 1850
+Wire Wire Line
+	1650 1850 1800 1850
+Connection ~ 1800 1850
+Wire Wire Line
+	3150 1450 3000 1450
+Wire Wire Line
+	3000 1450 3000 1500
+Wire Wire Line
+	3000 1500 2950 1500
+Wire Wire Line
+	2950 1500 2950 1600
+Wire Wire Line
+	2950 1600 3000 1600
+Wire Wire Line
+	3000 1600 3000 1850
+Wire Wire Line
+	3000 1850 2100 1850
+Connection ~ 2100 1850
+Wire Wire Line
+	1650 1550 1800 1550
+Connection ~ 1800 1550
+Wire Wire Line
+	1650 1350 2100 1350
+Connection ~ 2100 1350
+$Comp
+L Device:R R10
+U 1 1 5C82E0DC
+P 4100 1000
+AR Path="/5C82D708/5C82E0DC" Ref="R10"  Part="1" 
+AR Path="/5C83CCD2/5C82E0DC" Ref="R15"  Part="1" 
+AR Path="/5C8495D2/5C82E0DC" Ref="R20"  Part="1" 
+AR Path="/5C8524DA/5C82E0DC" Ref="R25"  Part="1" 
+F 0 "R10" H 4170 1046 50  0000 L CNN
+F 1 "10K" H 4170 955 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 4030 1000 50  0001 C CNN
+F 3 "~" H 4100 1000 50  0001 C CNN
+	1    4100 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 1350 3950 1350
+Wire Wire Line
+	4100 850  4100 750 
+Wire Wire Line
+	4100 750  3050 750 
+Text HLabel 4400 1300 0    50   Output ~ 0
+BTN
+Wire Wire Line
+	3950 1450 4050 1450
+Wire Wire Line
+	4100 1350 4100 1200
+Wire Wire Line
+	4400 1300 4500 1300
+Wire Wire Line
+	4100 1200 4500 1200
+Wire Wire Line
+	4500 1200 4500 1300
+Connection ~ 4100 1200
+Wire Wire Line
+	4100 1200 4100 1150
+Wire Wire Line
+	4050 1850 3000 1850
+Connection ~ 3000 1850
+Wire Wire Line
+	4050 1450 4050 1850
+Connection ~ 3050 750 
+Wire Wire Line
+	2750 750  3050 750 
+Text HLabel 5000 3600 0    50   Input ~ 0
+LED_MUX_0
+Text HLabel 5000 3700 0    50   Input ~ 0
+VCC
+$Comp
+L SamacSys_Parts:DMG9933USD-13 Q1
+U 1 1 5C82E0FB
+P 5200 3500
+AR Path="/5C82D708/5C82E0FB" Ref="Q1"  Part="1" 
+AR Path="/5C83CCD2/5C82E0FB" Ref="Q2"  Part="1" 
+AR Path="/5C8495D2/5C82E0FB" Ref="Q3"  Part="1" 
+AR Path="/5C8524DA/5C82E0FB" Ref="Q4"  Part="1" 
+F 0 "Q1" H 5700 3765 50  0000 C CNN
+F 1 "DMG9933USD-13" H 5700 3674 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 6050 3600 50  0001 L CNN
+F 3 "https://componentsearchengine.com/Datasheets/1/DMG9933USD-13.pdf" H 6050 3500 50  0001 L CNN
+F 4 "Trans MOSFET P-CH 20V 4.6A Automotive 8-Pin SO T/R" H 6050 3400 50  0001 L CNN "Description"
+F 5 "1.75" H 6050 3300 50  0001 L CNN "Height"
+F 6 "621-DMG9933USD-13" H 6050 3200 50  0001 L CNN "Mouser Part Number"
+F 7 "https://www.mouser.com/Search/Refine.aspx?Keyword=621-DMG9933USD-13" H 6050 3100 50  0001 L CNN "Mouser Price/Stock"
+F 8 "Diodes Inc." H 6050 3000 50  0001 L CNN "Manufacturer_Name"
+F 9 "DMG9933USD-13" H 6050 2900 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5200 3500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5200 3700 5050 3700
+Wire Wire Line
+	5050 3500 5200 3500
+Wire Wire Line
+	5000 3700 5050 3700
+Connection ~ 5050 3700
+Wire Wire Line
+	5050 3700 5050 3500
+Text HLabel 5000 3800 0    50   Input ~ 0
+LED_MUX_1
+Wire Wire Line
+	5000 3800 5200 3800
+Wire Wire Line
+	5000 3600 5200 3600
+Text HLabel 3900 2200 0    50   Input ~ 0
+LED_0
+$Comp
+L Device:LED D10
+U 1 1 5C82E10B
+P 4150 2200
+AR Path="/5C82D708/5C82E10B" Ref="D10"  Part="1" 
+AR Path="/5C83CCD2/5C82E10B" Ref="D42"  Part="1" 
+AR Path="/5C8495D2/5C82E10B" Ref="D74"  Part="1" 
+AR Path="/5C8524DA/5C82E10B" Ref="D106"  Part="1" 
+F 0 "D10" H 4141 2416 50  0000 C CNN
+F 1 "LED" H 4141 2325 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 2200 50  0001 C CNN
+F 3 "~" H 4150 2200 50  0001 C CNN
+	1    4150 2200
+	1    0    0    -1  
+$EndComp
+Text HLabel 3900 2550 0    50   Input ~ 0
+LED_1
+$Comp
+L Device:LED D12
+U 1 1 5C82E113
+P 4150 2550
+AR Path="/5C82D708/5C82E113" Ref="D12"  Part="1" 
+AR Path="/5C83CCD2/5C82E113" Ref="D44"  Part="1" 
+AR Path="/5C8495D2/5C82E113" Ref="D76"  Part="1" 
+AR Path="/5C8524DA/5C82E113" Ref="D108"  Part="1" 
+F 0 "D12" H 4141 2766 50  0000 C CNN
+F 1 "LED" H 4141 2675 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 2550 50  0001 C CNN
+F 3 "~" H 4150 2550 50  0001 C CNN
+	1    4150 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 2550 4000 2550
+Text HLabel 3900 2900 0    50   Input ~ 0
+LED_2
+$Comp
+L Device:LED D14
+U 1 1 5C82E11C
+P 4150 2900
+AR Path="/5C82D708/5C82E11C" Ref="D14"  Part="1" 
+AR Path="/5C83CCD2/5C82E11C" Ref="D46"  Part="1" 
+AR Path="/5C8495D2/5C82E11C" Ref="D78"  Part="1" 
+AR Path="/5C8524DA/5C82E11C" Ref="D110"  Part="1" 
+F 0 "D14" H 4141 3116 50  0000 C CNN
+F 1 "LED" H 4141 3025 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 2900 50  0001 C CNN
+F 3 "~" H 4150 2900 50  0001 C CNN
+	1    4150 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 2900 4000 2900
+Text HLabel 3900 3250 0    50   Input ~ 0
+LED_3
+$Comp
+L Device:LED D16
+U 1 1 5C82E125
+P 4150 3250
+AR Path="/5C82D708/5C82E125" Ref="D16"  Part="1" 
+AR Path="/5C83CCD2/5C82E125" Ref="D48"  Part="1" 
+AR Path="/5C8495D2/5C82E125" Ref="D80"  Part="1" 
+AR Path="/5C8524DA/5C82E125" Ref="D112"  Part="1" 
+F 0 "D16" H 4141 3466 50  0000 C CNN
+F 1 "LED" H 4141 3375 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 3250 50  0001 C CNN
+F 3 "~" H 4150 3250 50  0001 C CNN
+	1    4150 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3250 4000 3250
+Text HLabel 3900 3600 0    50   Input ~ 0
+LED_4
+$Comp
+L Device:LED D18
+U 1 1 5C82E12E
+P 4150 3600
+AR Path="/5C82D708/5C82E12E" Ref="D18"  Part="1" 
+AR Path="/5C83CCD2/5C82E12E" Ref="D50"  Part="1" 
+AR Path="/5C8495D2/5C82E12E" Ref="D82"  Part="1" 
+AR Path="/5C8524DA/5C82E12E" Ref="D114"  Part="1" 
+F 0 "D18" H 4141 3816 50  0000 C CNN
+F 1 "LED" H 4141 3725 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 3600 50  0001 C CNN
+F 3 "~" H 4150 3600 50  0001 C CNN
+	1    4150 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3600 4000 3600
+Text HLabel 3900 3950 0    50   Input ~ 0
+LED_5
+$Comp
+L Device:LED D20
+U 1 1 5C82E137
+P 4150 3950
+AR Path="/5C82D708/5C82E137" Ref="D20"  Part="1" 
+AR Path="/5C83CCD2/5C82E137" Ref="D52"  Part="1" 
+AR Path="/5C8495D2/5C82E137" Ref="D84"  Part="1" 
+AR Path="/5C8524DA/5C82E137" Ref="D116"  Part="1" 
+F 0 "D20" H 4141 4166 50  0000 C CNN
+F 1 "LED" H 4141 4075 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 3950 50  0001 C CNN
+F 3 "~" H 4150 3950 50  0001 C CNN
+	1    4150 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3950 4000 3950
+Text HLabel 3900 4300 0    50   Input ~ 0
+LED_6
+$Comp
+L Device:LED D22
+U 1 1 5C82E140
+P 4150 4300
+AR Path="/5C82D708/5C82E140" Ref="D22"  Part="1" 
+AR Path="/5C83CCD2/5C82E140" Ref="D54"  Part="1" 
+AR Path="/5C8495D2/5C82E140" Ref="D86"  Part="1" 
+AR Path="/5C8524DA/5C82E140" Ref="D118"  Part="1" 
+F 0 "D22" H 4141 4516 50  0000 C CNN
+F 1 "LED" H 4141 4425 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 4300 50  0001 C CNN
+F 3 "~" H 4150 4300 50  0001 C CNN
+	1    4150 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 4300 4000 4300
+Text HLabel 3900 4650 0    50   Input ~ 0
+LED_7
+$Comp
+L Device:LED D24
+U 1 1 5C82E149
+P 4150 4650
+AR Path="/5C82D708/5C82E149" Ref="D24"  Part="1" 
+AR Path="/5C83CCD2/5C82E149" Ref="D56"  Part="1" 
+AR Path="/5C8495D2/5C82E149" Ref="D88"  Part="1" 
+AR Path="/5C8524DA/5C82E149" Ref="D120"  Part="1" 
+F 0 "D24" H 4141 4866 50  0000 C CNN
+F 1 "LED" H 4141 4775 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 4650 50  0001 C CNN
+F 3 "~" H 4150 4650 50  0001 C CNN
+	1    4150 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 4650 4000 4650
+Text HLabel 3900 5000 0    50   Input ~ 0
+LED_8
+$Comp
+L Device:LED D26
+U 1 1 5C82E152
+P 4150 5000
+AR Path="/5C82D708/5C82E152" Ref="D26"  Part="1" 
+AR Path="/5C83CCD2/5C82E152" Ref="D58"  Part="1" 
+AR Path="/5C8495D2/5C82E152" Ref="D90"  Part="1" 
+AR Path="/5C8524DA/5C82E152" Ref="D122"  Part="1" 
+F 0 "D26" H 4141 5216 50  0000 C CNN
+F 1 "LED" H 4141 5125 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 5000 50  0001 C CNN
+F 3 "~" H 4150 5000 50  0001 C CNN
+	1    4150 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 5000 4000 5000
+Text HLabel 3900 5350 0    50   Input ~ 0
+LED_9
+$Comp
+L Device:LED D28
+U 1 1 5C82E15B
+P 4150 5350
+AR Path="/5C82D708/5C82E15B" Ref="D28"  Part="1" 
+AR Path="/5C83CCD2/5C82E15B" Ref="D60"  Part="1" 
+AR Path="/5C8495D2/5C82E15B" Ref="D92"  Part="1" 
+AR Path="/5C8524DA/5C82E15B" Ref="D124"  Part="1" 
+F 0 "D28" H 4141 5566 50  0000 C CNN
+F 1 "LED" H 4141 5475 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 5350 50  0001 C CNN
+F 3 "~" H 4150 5350 50  0001 C CNN
+	1    4150 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 5350 4000 5350
+Text HLabel 3900 5700 0    50   Input ~ 0
+LED_10
+$Comp
+L Device:LED D30
+U 1 1 5C82E164
+P 4150 5700
+AR Path="/5C82D708/5C82E164" Ref="D30"  Part="1" 
+AR Path="/5C83CCD2/5C82E164" Ref="D62"  Part="1" 
+AR Path="/5C8495D2/5C82E164" Ref="D94"  Part="1" 
+AR Path="/5C8524DA/5C82E164" Ref="D126"  Part="1" 
+F 0 "D30" H 4141 5916 50  0000 C CNN
+F 1 "LED" H 4141 5825 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 5700 50  0001 C CNN
+F 3 "~" H 4150 5700 50  0001 C CNN
+	1    4150 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 5700 4000 5700
+Text HLabel 3900 6050 0    50   Input ~ 0
+LED_11
+$Comp
+L Device:LED D32
+U 1 1 5C82E16D
+P 4150 6050
+AR Path="/5C82D708/5C82E16D" Ref="D32"  Part="1" 
+AR Path="/5C83CCD2/5C82E16D" Ref="D64"  Part="1" 
+AR Path="/5C8495D2/5C82E16D" Ref="D96"  Part="1" 
+AR Path="/5C8524DA/5C82E16D" Ref="D128"  Part="1" 
+F 0 "D32" H 4141 6266 50  0000 C CNN
+F 1 "LED" H 4141 6175 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 6050 50  0001 C CNN
+F 3 "~" H 4150 6050 50  0001 C CNN
+	1    4150 6050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 6050 4000 6050
+Text HLabel 3900 6400 0    50   Input ~ 0
+LED_12
+$Comp
+L Device:LED D34
+U 1 1 5C82E176
+P 4150 6400
+AR Path="/5C82D708/5C82E176" Ref="D34"  Part="1" 
+AR Path="/5C83CCD2/5C82E176" Ref="D66"  Part="1" 
+AR Path="/5C8495D2/5C82E176" Ref="D98"  Part="1" 
+AR Path="/5C8524DA/5C82E176" Ref="D130"  Part="1" 
+F 0 "D34" H 4141 6616 50  0000 C CNN
+F 1 "LED" H 4141 6525 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 6400 50  0001 C CNN
+F 3 "~" H 4150 6400 50  0001 C CNN
+	1    4150 6400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 6400 4000 6400
+Text HLabel 3900 6750 0    50   Input ~ 0
+LED_13
+$Comp
+L Device:LED D36
+U 1 1 5C82E17F
+P 4150 6750
+AR Path="/5C82D708/5C82E17F" Ref="D36"  Part="1" 
+AR Path="/5C83CCD2/5C82E17F" Ref="D68"  Part="1" 
+AR Path="/5C8495D2/5C82E17F" Ref="D100"  Part="1" 
+AR Path="/5C8524DA/5C82E17F" Ref="D132"  Part="1" 
+F 0 "D36" H 4141 6966 50  0000 C CNN
+F 1 "LED" H 4141 6875 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 6750 50  0001 C CNN
+F 3 "~" H 4150 6750 50  0001 C CNN
+	1    4150 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 6750 4000 6750
+Text HLabel 3900 7100 0    50   Input ~ 0
+LED_14
+$Comp
+L Device:LED D38
+U 1 1 5C82E188
+P 4150 7100
+AR Path="/5C82D708/5C82E188" Ref="D38"  Part="1" 
+AR Path="/5C83CCD2/5C82E188" Ref="D70"  Part="1" 
+AR Path="/5C8495D2/5C82E188" Ref="D102"  Part="1" 
+AR Path="/5C8524DA/5C82E188" Ref="D134"  Part="1" 
+F 0 "D38" H 4141 7316 50  0000 C CNN
+F 1 "LED" H 4141 7225 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 7100 50  0001 C CNN
+F 3 "~" H 4150 7100 50  0001 C CNN
+	1    4150 7100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 7100 4000 7100
+Text HLabel 3900 7450 0    50   Input ~ 0
+LED_15
+$Comp
+L Device:LED D40
+U 1 1 5C82E191
+P 4150 7450
+AR Path="/5C82D708/5C82E191" Ref="D40"  Part="1" 
+AR Path="/5C83CCD2/5C82E191" Ref="D72"  Part="1" 
+AR Path="/5C8495D2/5C82E191" Ref="D104"  Part="1" 
+AR Path="/5C8524DA/5C82E191" Ref="D136"  Part="1" 
+F 0 "D40" H 4141 7666 50  0000 C CNN
+F 1 "LED" H 4141 7575 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 4150 7450 50  0001 C CNN
+F 3 "~" H 4150 7450 50  0001 C CNN
+	1    4150 7450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 7450 4000 7450
+Wire Wire Line
+	6200 3600 6200 3500
+Wire Wire Line
+	4300 2200 4300 2550
+Connection ~ 4300 2550
+Wire Wire Line
+	4300 2550 4300 2900
+Connection ~ 4300 2900
+Wire Wire Line
+	4300 2900 4300 3250
+Connection ~ 4300 3250
+Wire Wire Line
+	4300 3250 4300 3600
+Connection ~ 4300 3600
+Wire Wire Line
+	4300 3600 4300 3950
+Connection ~ 4300 3950
+Wire Wire Line
+	4300 3950 4300 4300
+Connection ~ 4300 4300
+Wire Wire Line
+	4300 4300 4300 4650
+Connection ~ 4300 4650
+Wire Wire Line
+	4300 4650 4300 5000
+Connection ~ 4300 5000
+Wire Wire Line
+	4300 5000 4300 5350
+Connection ~ 4300 5350
+Wire Wire Line
+	4300 5350 4300 5700
+Connection ~ 4300 5700
+Wire Wire Line
+	4300 5700 4300 6050
+Connection ~ 4300 6050
+Wire Wire Line
+	4300 6050 4300 6400
+Connection ~ 4300 6400
+Wire Wire Line
+	4300 6400 4300 6750
+Connection ~ 4300 6750
+Wire Wire Line
+	4300 6750 4300 7100
+Connection ~ 4300 7100
+Wire Wire Line
+	4300 7100 4300 7450
+Wire Wire Line
+	6300 2200 6300 2950
+Wire Wire Line
+	6300 3500 6200 3500
+Connection ~ 6200 3500
+Text HLabel 2850 2200 0    50   Input ~ 0
+LED_0
+$Comp
+L Device:LED D9
+U 1 1 5C82E1BD
+P 3100 2200
+AR Path="/5C82D708/5C82E1BD" Ref="D9"  Part="1" 
+AR Path="/5C83CCD2/5C82E1BD" Ref="D41"  Part="1" 
+AR Path="/5C8495D2/5C82E1BD" Ref="D73"  Part="1" 
+AR Path="/5C8524DA/5C82E1BD" Ref="D105"  Part="1" 
+F 0 "D9" H 3091 2416 50  0000 C CNN
+F 1 "LED" H 3091 2325 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 2200 50  0001 C CNN
+F 3 "~" H 3100 2200 50  0001 C CNN
+	1    3100 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 2200 2950 2200
+Text HLabel 2850 2550 0    50   Input ~ 0
+LED_1
+$Comp
+L Device:LED D11
+U 1 1 5C82E1C6
+P 3100 2550
+AR Path="/5C82D708/5C82E1C6" Ref="D11"  Part="1" 
+AR Path="/5C83CCD2/5C82E1C6" Ref="D43"  Part="1" 
+AR Path="/5C8495D2/5C82E1C6" Ref="D75"  Part="1" 
+AR Path="/5C8524DA/5C82E1C6" Ref="D107"  Part="1" 
+F 0 "D11" H 3091 2766 50  0000 C CNN
+F 1 "LED" H 3091 2675 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 2550 50  0001 C CNN
+F 3 "~" H 3100 2550 50  0001 C CNN
+	1    3100 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 2550 2950 2550
+Text HLabel 2850 2900 0    50   Input ~ 0
+LED_2
+$Comp
+L Device:LED D13
+U 1 1 5C82E1CF
+P 3100 2900
+AR Path="/5C82D708/5C82E1CF" Ref="D13"  Part="1" 
+AR Path="/5C83CCD2/5C82E1CF" Ref="D45"  Part="1" 
+AR Path="/5C8495D2/5C82E1CF" Ref="D77"  Part="1" 
+AR Path="/5C8524DA/5C82E1CF" Ref="D109"  Part="1" 
+F 0 "D13" H 3091 3116 50  0000 C CNN
+F 1 "LED" H 3091 3025 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 2900 50  0001 C CNN
+F 3 "~" H 3100 2900 50  0001 C CNN
+	1    3100 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 2900 2950 2900
+Text HLabel 2850 3250 0    50   Input ~ 0
+LED_3
+$Comp
+L Device:LED D15
+U 1 1 5C82E1D8
+P 3100 3250
+AR Path="/5C82D708/5C82E1D8" Ref="D15"  Part="1" 
+AR Path="/5C83CCD2/5C82E1D8" Ref="D47"  Part="1" 
+AR Path="/5C8495D2/5C82E1D8" Ref="D79"  Part="1" 
+AR Path="/5C8524DA/5C82E1D8" Ref="D111"  Part="1" 
+F 0 "D15" H 3091 3466 50  0000 C CNN
+F 1 "LED" H 3091 3375 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 3250 50  0001 C CNN
+F 3 "~" H 3100 3250 50  0001 C CNN
+	1    3100 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 3250 2950 3250
+Text HLabel 2850 3600 0    50   Input ~ 0
+LED_4
+$Comp
+L Device:LED D17
+U 1 1 5C82E1E1
+P 3100 3600
+AR Path="/5C82D708/5C82E1E1" Ref="D17"  Part="1" 
+AR Path="/5C83CCD2/5C82E1E1" Ref="D49"  Part="1" 
+AR Path="/5C8495D2/5C82E1E1" Ref="D81"  Part="1" 
+AR Path="/5C8524DA/5C82E1E1" Ref="D113"  Part="1" 
+F 0 "D17" H 3091 3816 50  0000 C CNN
+F 1 "LED" H 3091 3725 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 3600 50  0001 C CNN
+F 3 "~" H 3100 3600 50  0001 C CNN
+	1    3100 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 3600 2950 3600
+Text HLabel 2850 3950 0    50   Input ~ 0
+LED_5
+$Comp
+L Device:LED D19
+U 1 1 5C82E1EA
+P 3100 3950
+AR Path="/5C82D708/5C82E1EA" Ref="D19"  Part="1" 
+AR Path="/5C83CCD2/5C82E1EA" Ref="D51"  Part="1" 
+AR Path="/5C8495D2/5C82E1EA" Ref="D83"  Part="1" 
+AR Path="/5C8524DA/5C82E1EA" Ref="D115"  Part="1" 
+F 0 "D19" H 3091 4166 50  0000 C CNN
+F 1 "LED" H 3091 4075 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 3950 50  0001 C CNN
+F 3 "~" H 3100 3950 50  0001 C CNN
+	1    3100 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 3950 2950 3950
+Text HLabel 2850 4300 0    50   Input ~ 0
+LED_6
+$Comp
+L Device:LED D21
+U 1 1 5C82E1F3
+P 3100 4300
+AR Path="/5C82D708/5C82E1F3" Ref="D21"  Part="1" 
+AR Path="/5C83CCD2/5C82E1F3" Ref="D53"  Part="1" 
+AR Path="/5C8495D2/5C82E1F3" Ref="D85"  Part="1" 
+AR Path="/5C8524DA/5C82E1F3" Ref="D117"  Part="1" 
+F 0 "D21" H 3091 4516 50  0000 C CNN
+F 1 "LED" H 3091 4425 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 4300 50  0001 C CNN
+F 3 "~" H 3100 4300 50  0001 C CNN
+	1    3100 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 4300 2950 4300
+Text HLabel 2850 4650 0    50   Input ~ 0
+LED_7
+$Comp
+L Device:LED D23
+U 1 1 5C82E1FC
+P 3100 4650
+AR Path="/5C82D708/5C82E1FC" Ref="D23"  Part="1" 
+AR Path="/5C83CCD2/5C82E1FC" Ref="D55"  Part="1" 
+AR Path="/5C8495D2/5C82E1FC" Ref="D87"  Part="1" 
+AR Path="/5C8524DA/5C82E1FC" Ref="D119"  Part="1" 
+F 0 "D23" H 3091 4866 50  0000 C CNN
+F 1 "LED" H 3091 4775 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 4650 50  0001 C CNN
+F 3 "~" H 3100 4650 50  0001 C CNN
+	1    3100 4650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 4650 2950 4650
+Text HLabel 2850 5000 0    50   Input ~ 0
+LED_8
+$Comp
+L Device:LED D25
+U 1 1 5C82E205
+P 3100 5000
+AR Path="/5C82D708/5C82E205" Ref="D25"  Part="1" 
+AR Path="/5C83CCD2/5C82E205" Ref="D57"  Part="1" 
+AR Path="/5C8495D2/5C82E205" Ref="D89"  Part="1" 
+AR Path="/5C8524DA/5C82E205" Ref="D121"  Part="1" 
+F 0 "D25" H 3091 5216 50  0000 C CNN
+F 1 "LED" H 3091 5125 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 5000 50  0001 C CNN
+F 3 "~" H 3100 5000 50  0001 C CNN
+	1    3100 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 5000 2950 5000
+Text HLabel 2850 5350 0    50   Input ~ 0
+LED_9
+$Comp
+L Device:LED D27
+U 1 1 5C82E20E
+P 3100 5350
+AR Path="/5C82D708/5C82E20E" Ref="D27"  Part="1" 
+AR Path="/5C83CCD2/5C82E20E" Ref="D59"  Part="1" 
+AR Path="/5C8495D2/5C82E20E" Ref="D91"  Part="1" 
+AR Path="/5C8524DA/5C82E20E" Ref="D123"  Part="1" 
+F 0 "D27" H 3091 5566 50  0000 C CNN
+F 1 "LED" H 3091 5475 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 5350 50  0001 C CNN
+F 3 "~" H 3100 5350 50  0001 C CNN
+	1    3100 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 5350 2950 5350
+Text HLabel 2850 5700 0    50   Input ~ 0
+LED_10
+$Comp
+L Device:LED D29
+U 1 1 5C82E217
+P 3100 5700
+AR Path="/5C82D708/5C82E217" Ref="D29"  Part="1" 
+AR Path="/5C83CCD2/5C82E217" Ref="D61"  Part="1" 
+AR Path="/5C8495D2/5C82E217" Ref="D93"  Part="1" 
+AR Path="/5C8524DA/5C82E217" Ref="D125"  Part="1" 
+F 0 "D29" H 3091 5916 50  0000 C CNN
+F 1 "LED" H 3091 5825 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 5700 50  0001 C CNN
+F 3 "~" H 3100 5700 50  0001 C CNN
+	1    3100 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 5700 2950 5700
+Text HLabel 2850 6050 0    50   Input ~ 0
+LED_11
+$Comp
+L Device:LED D31
+U 1 1 5C82E220
+P 3100 6050
+AR Path="/5C82D708/5C82E220" Ref="D31"  Part="1" 
+AR Path="/5C83CCD2/5C82E220" Ref="D63"  Part="1" 
+AR Path="/5C8495D2/5C82E220" Ref="D95"  Part="1" 
+AR Path="/5C8524DA/5C82E220" Ref="D127"  Part="1" 
+F 0 "D31" H 3091 6266 50  0000 C CNN
+F 1 "LED" H 3091 6175 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 6050 50  0001 C CNN
+F 3 "~" H 3100 6050 50  0001 C CNN
+	1    3100 6050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 6050 2950 6050
+Text HLabel 2850 6400 0    50   Input ~ 0
+LED_12
+$Comp
+L Device:LED D33
+U 1 1 5C82E229
+P 3100 6400
+AR Path="/5C82D708/5C82E229" Ref="D33"  Part="1" 
+AR Path="/5C83CCD2/5C82E229" Ref="D65"  Part="1" 
+AR Path="/5C8495D2/5C82E229" Ref="D97"  Part="1" 
+AR Path="/5C8524DA/5C82E229" Ref="D129"  Part="1" 
+F 0 "D33" H 3091 6616 50  0000 C CNN
+F 1 "LED" H 3091 6525 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 6400 50  0001 C CNN
+F 3 "~" H 3100 6400 50  0001 C CNN
+	1    3100 6400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 6400 2950 6400
+Text HLabel 2850 6750 0    50   Input ~ 0
+LED_13
+$Comp
+L Device:LED D35
+U 1 1 5C82E232
+P 3100 6750
+AR Path="/5C82D708/5C82E232" Ref="D35"  Part="1" 
+AR Path="/5C83CCD2/5C82E232" Ref="D67"  Part="1" 
+AR Path="/5C8495D2/5C82E232" Ref="D99"  Part="1" 
+AR Path="/5C8524DA/5C82E232" Ref="D131"  Part="1" 
+F 0 "D35" H 3091 6966 50  0000 C CNN
+F 1 "LED" H 3091 6875 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 6750 50  0001 C CNN
+F 3 "~" H 3100 6750 50  0001 C CNN
+	1    3100 6750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 6750 2950 6750
+Text HLabel 2850 7100 0    50   Input ~ 0
+LED_14
+$Comp
+L Device:LED D37
+U 1 1 5C82E23B
+P 3100 7100
+AR Path="/5C82D708/5C82E23B" Ref="D37"  Part="1" 
+AR Path="/5C83CCD2/5C82E23B" Ref="D69"  Part="1" 
+AR Path="/5C8495D2/5C82E23B" Ref="D101"  Part="1" 
+AR Path="/5C8524DA/5C82E23B" Ref="D133"  Part="1" 
+F 0 "D37" H 3091 7316 50  0000 C CNN
+F 1 "LED" H 3091 7225 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 7100 50  0001 C CNN
+F 3 "~" H 3100 7100 50  0001 C CNN
+	1    3100 7100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 7100 2950 7100
+Text HLabel 2850 7450 0    50   Input ~ 0
+LED_15
+$Comp
+L Device:LED D39
+U 1 1 5C82E244
+P 3100 7450
+AR Path="/5C82D708/5C82E244" Ref="D39"  Part="1" 
+AR Path="/5C83CCD2/5C82E244" Ref="D71"  Part="1" 
+AR Path="/5C8495D2/5C82E244" Ref="D103"  Part="1" 
+AR Path="/5C8524DA/5C82E244" Ref="D135"  Part="1" 
+F 0 "D39" H 3091 7666 50  0000 C CNN
+F 1 "LED" H 3091 7575 50  0000 C CNN
+F 2 "footprints:LED_0805_2012Metric_NO_SILKSCREEN" H 3100 7450 50  0001 C CNN
+F 3 "~" H 3100 7450 50  0001 C CNN
+	1    3100 7450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2850 7450 2950 7450
+Wire Wire Line
+	3250 2200 3250 2550
+Connection ~ 3250 2550
+Wire Wire Line
+	3250 2550 3250 2900
+Connection ~ 3250 2900
+Wire Wire Line
+	3250 2900 3250 3250
+Connection ~ 3250 3250
+Wire Wire Line
+	3250 3250 3250 3600
+Connection ~ 3250 3600
+Wire Wire Line
+	3250 3600 3250 3950
+Connection ~ 3250 3950
+Wire Wire Line
+	3250 3950 3250 4300
+Connection ~ 3250 4300
+Wire Wire Line
+	3250 4300 3250 4650
+Connection ~ 3250 4650
+Wire Wire Line
+	3250 4650 3250 5000
+Connection ~ 3250 5000
+Wire Wire Line
+	3250 5000 3250 5350
+Connection ~ 3250 5350
+Wire Wire Line
+	3250 5350 3250 5700
+Connection ~ 3250 5700
+Wire Wire Line
+	3250 5700 3250 6050
+Connection ~ 3250 6050
+Wire Wire Line
+	3250 6050 3250 6400
+Connection ~ 3250 6400
+Wire Wire Line
+	3250 6400 3250 6750
+Connection ~ 3250 6750
+Wire Wire Line
+	3250 6750 3250 7100
+Connection ~ 3250 7100
+Wire Wire Line
+	3250 7100 3250 7450
+Wire Wire Line
+	3250 2200 3250 2000
+Wire Wire Line
+	3250 2000 6450 2000
+Wire Wire Line
+	6450 2000 6450 3800
+Wire Wire Line
+	6450 3800 6200 3800
+Connection ~ 3250 2200
+Wire Wire Line
+	6200 3700 6200 3800
+Connection ~ 6200 3800
+Wire Wire Line
+	3900 2200 4000 2200
+Wire Wire Line
+	4300 2200 6300 2200
+Connection ~ 4300 2200
+$Comp
+L Device:C C?
+U 1 1 5C9D97CC
+P 4900 3250
+AR Path="/5C9D97CC" Ref="C?"  Part="1" 
+AR Path="/5C83CCD2/5C9D97CC" Ref="C17"  Part="1" 
+AR Path="/5C8495D2/5C9D97CC" Ref="C18"  Part="1" 
+AR Path="/5C82D708/5C9D97CC" Ref="C16"  Part="1" 
+AR Path="/5C8524DA/5C9D97CC" Ref="C19"  Part="1" 
+F 0 "C16" V 4648 3250 50  0000 C CNN
+F 1 "100n" V 4739 3250 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 4938 3100 50  0001 C CNN
+F 3 "~" H 4900 3250 50  0001 C CNN
+	1    4900 3250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5050 3250 5050 3500
+Connection ~ 5050 3500
+Text HLabel 4650 3250 0    50   Input ~ 0
+GND
+Wire Wire Line
+	4650 3250 4750 3250
+$Comp
+L Device:R R28
+U 1 1 5CB6FD14
+P 6450 3950
+AR Path="/5C83CCD2/5CB6FD14" Ref="R28"  Part="1" 
+AR Path="/5C8495D2/5CB6FD14" Ref="R30"  Part="1" 
+AR Path="/5C82D708/5CB6FD14" Ref="R5"  Part="1" 
+AR Path="/5C8524DA/5CB6FD14" Ref="R32"  Part="1" 
+F 0 "R5" H 6520 3996 50  0000 L CNN
+F 1 "1k" H 6520 3905 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 6380 3950 50  0001 C CNN
+F 3 "~" H 6450 3950 50  0001 C CNN
+	1    6450 3950
+	1    0    0    -1  
+$EndComp
+Connection ~ 6450 3800
+Text HLabel 6450 4100 0    50   Input ~ 0
+GND
+$Comp
+L Device:R R6
+U 1 1 5CB70E39
+P 6150 3100
+AR Path="/5C83CCD2/5CB70E39" Ref="R6"  Part="1" 
+AR Path="/5C8495D2/5CB70E39" Ref="R29"  Part="1" 
+AR Path="/5C82D708/5CB70E39" Ref="R4"  Part="1" 
+AR Path="/5C8524DA/5CB70E39" Ref="R31"  Part="1" 
+F 0 "R4" H 6220 3146 50  0000 L CNN
+F 1 "1k" H 6220 3055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" V 6080 3100 50  0001 C CNN
+F 3 "~" H 6150 3100 50  0001 C CNN
+	1    6150 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6150 2950 6300 2950
+Connection ~ 6300 2950
+Wire Wire Line
+	6300 2950 6300 3500
+Text HLabel 6150 3250 0    50   Input ~ 0
+GND
+$EndSCHEMATC
