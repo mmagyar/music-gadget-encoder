@@ -1,5 +1,6 @@
-#include "inputs.h"
-#include "mux.h"
+#include "../system/inputs.h"
+
+#include "../system/mux.h"
 const Encoder_pins encoder_pins[ENCODER_COUNT] = {
         {
                 { ENC_A_0_GPIO_Port, ENC_A_0_Pin },
@@ -27,7 +28,7 @@ Encoder_data encoders[ENCODER_COUNT] = {
         { 0xFF, 4, 0x00 },
         { 0xFF, 2, 0x00 },
         { 0xFF, 4, 0x00 },
-        { 0xFF, 4, 0x01 } };
+        { 0xFF, 4, 0x00 } };
 
 inline void process_encoder_button(Encoder_data * encoder) {
     if (encoder->reset_button) {

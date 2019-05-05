@@ -39,7 +39,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "lib/printf.h"
-#include "mcu_util/mux.h"
+#include "system/mux.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

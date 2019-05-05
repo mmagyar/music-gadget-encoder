@@ -7,9 +7,9 @@
 
 #ifndef MUX_H_
 #define MUX_H_
+#include "../system/inputs.h"
 #include "../util/types.h"
 #include "../util/safe_array.h"
-#include "inputs.h"
 
 volatile u32 cpu_cycles;
 volatile u32 percentage;

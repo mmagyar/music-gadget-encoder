@@ -167,6 +167,9 @@ int main(void)
     }
     LL_USART_EnableIT_RXNE(USART4);
     LL_USART_EnableIT_ERROR(USART4);
+
+    LL_USART_EnableIT_RXNE(USART3);
+        LL_USART_EnableIT_ERROR(USART3);
 //    LL_USART_TransmitData8(USART4, 'x');
 
 

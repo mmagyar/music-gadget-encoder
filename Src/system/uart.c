@@ -1,7 +1,9 @@
-#include "uart.h"
+#include "../system/uart.h"
+
 #include "usart.h"
 #include "../util/error_log.h"
-#include "irq_helper.h"
+#include "../lib/printf.h"
+#include "../system/irq_helper.h"
 
 def_Circular_buffer(uart_print, 8, 'p');
 def_Circular_buffer(uart_cmd, 8, 'c');
@@ -94,6 +96,8 @@ void uart_4_tx() {
 }
 
 void uart_3_rx() {
+    char data = LL_USART_ReceiveData8(USART3);
+    printf("0x%04X\r\n", data);
 }
 void uart_3_tx() {
     Buffer_read_result result = { 0, false };
@@ -117,7 +121,7 @@ void USART3_4_IRQHandler(void)
     {
         uart_4_tx()
         ;
-    })
+    }, false)
 
     UART_IRQ(3, {
         uart_3_rx()
@@ -126,7 +130,7 @@ void USART3_4_IRQHandler(void)
     {
         uart_3_tx()
         ;
-    })
+    },false)
 
 }
 

@@ -1,5 +1,5 @@
-#ifndef MCU_UTIL_IRQ_HELPER_H_
-#define MCU_UTIL_IRQ_HELPER_H_
+#ifndef SYSTEM_IRQ_HELPER_H_
+#define SYSTEM_IRQ_HELPER_H_
 
 #include "../util/error_log.h"
 #define IRQ_COMMON(IRQ_CODE) \
@@ -43,7 +43,7 @@
         } else SPI_ERRORS_IRQ(SPI_NUM) \
     })
 
-#define UART_ERRORS_IRQ(USART_NUM) \
+#define UART_ERRORS_IRQ(USART_NUM, SHOW_UNEXPECTED_ERR) \
     if (LL_USART_IsActiveFlag_FE(USART ## USART_NUM)) { \
         log_error(EC_UART_## USART_NUM ##_FRAMING_ERROR, 'i'); \
         LL_USART_ClearFlag_FE(USART ## USART_NUM); \
@@ -53,15 +53,15 @@
     } else if (LL_USART_IsActiveFlag_ORE(USART ## USART_NUM)) { \
         log_error(EC_UART_## USART_NUM ##_OVERFLOW, 'i'); \
         LL_USART_ClearFlag_ORE(USART ## USART_NUM); \
-    } else log_error(EC_UART_## USART_NUM ##_UNEXPECTED, 'i'); \
+    } else if (SHOW_UNEXPECTED_ERR) log_error(EC_UART_## USART_NUM ##_UNEXPECTED, 'i'); \
 
-#define UART_IRQ(USART_NUM, RX_CODE, TX_CODE) \
+#define UART_IRQ(USART_NUM, RX_CODE, TX_CODE, SHOW_UNEXPECTED_ERR) \
     IRQ_COMMON({ \
         if (LL_USART_IsActiveFlag_RXNE(USART ## USART_NUM) && LL_USART_IsEnabledIT_RXNE(USART ## USART_NUM)) { \
             RX_CODE \
         } else if (LL_USART_IsActiveFlag_TXE(USART ## USART_NUM) && LL_USART_IsEnabledIT_TXE(USART ## USART_NUM)) { \
             TX_CODE \
-        } else UART_ERRORS_IRQ(USART_NUM) \
+        } else UART_ERRORS_IRQ(USART_NUM, SHOW_UNEXPECTED_ERR) \
     })
 
-#endif /* MCU_UTIL_IRQ_HELPER_H_ */
+#endif /* SYSTEM_IRQ_HELPER_H_ */

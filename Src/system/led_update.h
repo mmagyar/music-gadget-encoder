@@ -1,5 +1,5 @@
-#ifndef MCU_UTIL_LED_UPDATE_H_
-#define MCU_UTIL_LED_UPDATE_H_
+#ifndef SYSTEM_LED_UPDATE_H_
+#define SYSTEM_LED_UPDATE_H_
 #include "../util/types.h"
 #define intensity_gradients 5
 //10 columns 4 levels
@@ -43,4 +43,4 @@ void led_calculate_bar_16(u8 value, Intensity * target);
 void led_calculate_bar_signed_16(s8 signed_value, Intensity * target) ;
 void update_display();
 
-#endif /* MCU_UTIL_LED_UPDATE_H_ */
+#endif /* SYSTEM_LED_UPDATE_H_ */

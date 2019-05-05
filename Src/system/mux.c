@@ -1,9 +1,11 @@
-#include "mux.h"
+#include "../system/mux.h"
+
 #include "tim.h"
 #include "spi.h"
-#include "led_update.h"
+
+#include "../system/irq_helper.h"
+#include "../system/led_update.h"
 #include "../util/error_log.h"
-#include "irq_helper.h"
 const GPIO_TypeDef * mux_port[10] = {
 LED_MUX_0_GPIO_Port, LED_MUX_1_GPIO_Port,
 LED_MUX_2_GPIO_Port, LED_MUX_3_GPIO_Port, LED_MUX_4_GPIO_Port,

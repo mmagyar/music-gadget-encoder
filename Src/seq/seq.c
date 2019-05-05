@@ -2,10 +2,10 @@
 #include "../util/safe_array.h"
 #include "../util/midi/midi.h"
 #include "../util/midi/midi_enums.h"
-#include "../mcu_util/led_update.h"
-#include "../mcu_util/inputs.h"
 #include "stdint.h"
 #include "arm_math.h"
+#include "../system/inputs.h"
+#include "../system/led_update.h"
 
 Seq seq = {
         {
@@ -15,7 +15,10 @@ Seq seq = {
         { 31 },
         { SEQ_LEVELS - 1 },
         true,
-        120
+        120,
+        0,
+        0,
+        {{{255,-128},{255,INT8_MAX},{255,128},{255,127}}}
 };
 
 Midi_note notes[SEQ_LEVELS] = {

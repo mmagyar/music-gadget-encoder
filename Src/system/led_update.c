@@ -1,9 +1,9 @@
-#include "led_update.h"
+#include "../system/led_update.h"
 
 #include "tim.h"
 #include "../util/safe_array.h"
-#include "inputs.h"
 #include "../mainthread.h"
+#include "../system/inputs.h"
 
 u16 led_data[10][intensity_gradients] = { };
 Led_display display = { DT_PRECISE };

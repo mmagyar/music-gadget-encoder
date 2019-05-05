@@ -1,13 +1,13 @@
 #include "mainthread.h"
-#include "mcu_util/led_update.h"
 #include "stm32g070xx.h"
 #include "tim.h"
-#include "mcu_util/inputs.h"
 #include "util/error_log_code_text.h"
 #include  <sys/unistd.h> // STDOUT_FILENO, STDERR_FILENO
 #include "lib/printf.h"
 #include "seq/seq.h"
-#include "mcu_util/mux.h"
+#include "system/inputs.h"
+#include "system/led_update.h"
+#include "system/mux.h"
 #include  "util/midi/midi.h"
 
 Task tasks[max_task_count] = { };
@@ -87,7 +87,7 @@ void main_thread() {
                 Error * e = &error_log[ec];
                 if (e->error_code) {
                     char to_print[128];
-                    sprintf(to_print, "ERR %d - %c : %s", e->error_code, e->identifier,
+                    sprintf(to_print, "ERR 0x%02X - %c : %s", e->error_code, e->identifier,
                             error_code_text[(u8) e->error_code]);
                     print(to_print);
                     e->error_code = 0;

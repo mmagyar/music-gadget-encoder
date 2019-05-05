@@ -1,5 +1,5 @@
-#ifndef MCU_UTIL_INPUTS_H_
-#define MCU_UTIL_INPUTS_H_
+#ifndef SYSTEM_INPUTS_H_
+#define SYSTEM_INPUTS_H_
 
 #include "gpio.h"
 #include "../util/safe_array.h"
@@ -39,4 +39,4 @@ void process_encoder(Encoder_data * data);
  */
 void read_encoder_inputs();
 void mux_button_read();
-#endif /* MCU_UTIL_INPUTS_H_ */
+#endif /* SYSTEM_INPUTS_H_ */
