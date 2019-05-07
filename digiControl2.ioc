@@ -1,4 +1,9 @@
 #MicroXplorer Configuration settings - do not modify
+CRC.DefaultInitValueUse=DEFAULT_INIT_VALUE_ENABLE
+CRC.DefaultPolynomialUse=DEFAULT_POLYNOMIAL_ENABLE
+CRC.IPParameters=InputDataInversionMode,OutputDataInversionMode,DefaultPolynomialUse,DefaultInitValueUse
+CRC.InputDataInversionMode=CRC_INPUTDATA_INVERSION_BYTE
+CRC.OutputDataInversionMode=CRC_OUTPUTDATA_INVERSION_ENABLE
 File.Version=6
 KeepUserPlacement=false
 Mcu.Family=STM32G0
