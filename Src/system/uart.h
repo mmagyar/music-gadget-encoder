@@ -7,4 +7,5 @@
 int print(char* input);
 
 void send_buffer_uart_3(Circular_buffer * uart_3);
+void send_data_uart_4(u8 data);
 #endif /* SYSTEM_UART_H_ */

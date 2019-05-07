@@ -18,8 +18,8 @@ Seq seq = {
         120,
         0,
         0,
-        {{{255,-128},{255,INT8_MAX},{255,128},{255,127}}}
-};
+//{{{255,-128},{255,INT8_MAX},{255,128},{255,127}}}
+        };
 
 Midi_note notes[SEQ_LEVELS] = {
         C2,  //Bass drum
@@ -101,19 +101,22 @@ void start_playback() {
     seq.playing = true;
     //TODO start needs to continue where it left off
     u16 sixteenth = bpm_to_4th_ms(seq.bpm) / 4;
-    seq.start_ms = seq.current_ms + (sixteenth * seq.position.data);
+    seq.start_ms = seq.current_ms - (sixteenth * seq.position.data);
 }
 
 /**
  * Returns true if position is update, false if it's the same
  */
 bool update_seq_position() {
-    if (seq.current_ms < seq.start_ms) {
-        printf("Invalid sequencer status, current behind start ms, resetting start to current\r\n");
-        seq.start_ms = seq.current_ms;
+    u32 cms = seq.current_ms;
+
+    if (cms < seq.start_ms) {
+        printf("Invalid sequencer status, current: %d behind start ms: %d, "
+                "resetting start to current of %d\r\n", cms, seq.start_ms, seq.current_ms);
+        seq.start_ms = cms;
     }
     u16 sixteenth = bpm_to_4th_ms(seq.bpm) / 4;
-    u32 playback_ms = seq.current_ms - seq.start_ms;
+    u32 playback_ms = cms - seq.start_ms;
     u16 current_pos = playback_ms / sixteenth;
     bool result = current_pos != seq.position.data;
     if (current_pos >= 32) {

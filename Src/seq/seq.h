@@ -16,8 +16,8 @@ typedef struct {
     Counter current_level;
     bool playing;
     u8 bpm;
-    u64 current_ms; /* This parameter needs to be incremented in a timer interrupt every ms*/
-    u64 start_ms;
+    u32 current_ms; /* This parameter needs to be incremented in a timer interrupt every ms*/
+    u32 start_ms;
 
     Seq_event points[SEQ_LEVELS][32];
 } Seq;

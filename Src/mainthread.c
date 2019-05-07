@@ -9,6 +9,8 @@
 #include "system/led_update.h"
 #include "system/mux.h"
 #include  "util/midi/midi.h"
+#include "util/dataframe.h"
+#include "system/uart.h"
 
 Task tasks[max_task_count] = { };
 u32 ms_counter = 0;
@@ -16,11 +18,26 @@ u32 ms_last = 0;
 const u8 TASK_INDEX_LED_UPDATE = 0;
 const u8 TASK_INDEX_SEQ_UPATE = 1;
 void calculate_task_time(Task * task);
-
+void send_uart(u8 data) {
+    send_data_uart_4(data);
+}
+Frame_Receive_buffer bfr;
 void test_task() {
-//    send_cc(CH03, CC_CH_012, 53);
+
+    u8 * abc = (u8 *) "\r\nHEY SEXY\r\n";
+    send_on_the_fly(abc, 12, &send_uart);
+
 }
 
+void crc_feed_stm32(u8 byte) {
+    LL_CRC_FeedData8(CRC, byte);
+}
+u32 crc_get_stm32() {
+    u32 data = LL_CRC_ReadData32(CRC);
+    LL_CRC_ResetCRCCalculationUnit(CRC);
+    /* We need to invert it to get a standard CRC32*/
+    return (~data);
+}
 void init_tasks() {
 
     midi_bytes_ready_to_send = send_buffer_uart_3;
@@ -28,9 +45,11 @@ void init_tasks() {
     tasks[TASK_INDEX_LED_UPDATE].task = &update_display;
     tasks[TASK_INDEX_SEQ_UPATE].task = &update_seq;
     tasks[TASK_INDEX_SEQ_UPATE].repeat_ms = 16;
-    tasks[2].repeat_ms = 250;
+    tasks[2].repeat_ms = 1000;
     tasks[2].task = test_task;
 
+    crc_feed = &crc_feed_stm32;
+    crc_get = &crc_get_stm32;
 }
 char chr = 0;
 
@@ -77,8 +96,8 @@ void main_thread() {
         }
 
         if (button_pressed[0]) {
-          //  button_pressed[0]--;
-            printf("HELLO, loop time of led update: %d\r\n", (int) tasks[0].avg_time);
+            //  button_pressed[0]--;
+            // printf("HELLO, loop time of led update: %d\r\n", (int) tasks[0].avg_time);
         }
 
         if (error_count) {

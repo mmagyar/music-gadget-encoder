@@ -15,6 +15,12 @@ void send_buffer_uart_3(Circular_buffer * uart_3) {
 
 }
 
+void send_data_uart_4(u8 data) {
+    add_to_buffer(&uart_print, data);
+    LL_USART_EnableIT_TXE_TXFNF(USART4);
+
+}
+
 /**
  * Print to UART
  * Returns the number of written bytes
