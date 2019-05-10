@@ -4,8 +4,31 @@
 #include "stm32g070xx.h"
 #include "../util/safe_array.h"
 
+#define SERIALIZE(STRUCT_NAME) \
+    Mcu_uid uid = get_uid(); \
+    u8* uid_byte = (u8*)&uid; \
+    u8  send[ICOM_LARGEST_STRUCT +12 +1]; \
+    loop(x, 12) {send[x] = uid_byte[x]; } \
+    send[12] =  MT_ ## STRUCT_NAME; \
+    u8 struct_size = message_size[MT_ ## STRUCT_NAME]; \
+    loop(x, struct_size) { \
+        send[x + 12 + 1] = ((u8* ) input)[x];  \
+    }\
+    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)));
+
+#define DESERIALIZE(STRUCT_NAME) \
+        ((u8*)&receive_buffer->buffer.STRUCT_NAME)[byte_counter] = buffer[i]; \
+                if (byte_counter >= message_size[receive_buffer->type]) { \
+                    icom_receive_ ## STRUCT_NAME(receive_buffer->buffer.STRUCT_NAME); \
+                } \
+
+#define DESERIALIZE_CASE(STRUCT_NAME) \
+    case MT_ ## STRUCT_NAME : \
+        DESERIALIZE(STRUCT_NAME) \
+    break; \
+
 u8 message_size[8] = {
-        0, 2, 1, 3
+        0, sizeof(Control_change), sizeof(Button_press), sizeof(Led_update)
 };
 
 void send_uart(u8 data) {
@@ -28,67 +51,48 @@ Mcu_uid get_uid() {
     return uid;
 }
 
-void icom_send_control_change(Control_change * change) {
-    u8 msg[16] = { };
-    u8 i = 0;
-    msg[i++] = MT_CONTROL_CHANGE;
-    msg[i++] = change->controller_num;
-    msg[i++] = change->value;
-    send_intercom(msg, 3);
+void icom_send_control_change(Control_change * input) {
+    SERIALIZE(control_change)
 }
 
-void icom_send_button_press(u8 button_num) {
-    u8 msg[16] = { };
-    u8 i = 0;
-    //Maybe send the device id?
-    msg[i++] = MT_CONTROL_CHANGE;
-    msg[i++] = button_num;
-    send_intercom(msg, 2);
+void icom_send_button_press(Button_press * input) {
+    SERIALIZE(button_press)
+}
+
+void icom_send_led_update(Led_update * input) {
+    SERIALIZE(led_update);
 }
 
 /**
  * This will read structs, there can be may structs following each other
  */
-void icom_read_message(u8 * buffer, u16 size, Icom_receive_buffer receive_buffer) {
+void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
     bool in_process = false;
-    Message_type processing = MT_PING;
+    Message_type processing = MT_ping;
     u8 bytes_remaining = 0;
     u8 byte_counter = 0;
+    u8 sender_id_bytes_left = sizeof(Mcu_uid);
     loop(i, size)
     {
-        //Start of a new struct
-        if (!in_process) {
-            processing = buffer[i];
+        if(!sender_id_bytes_left){
+            ((u8 *)&receive_buffer->uid)[i] = buffer[i];
+            sender_id_bytes_left--;
+        } else if (!in_process) { //Start of a new struct
+            receive_buffer->type = buffer[i];
             if (processing >= 8) {
                 //ERROR, bad struct id
                 return;
             }
             bytes_remaining = message_size[processing];
-            if (processing != MT_PING) in_process = true;
+            if (processing != MT_ping) in_process = true;
             byte_counter = 0;
         } else {
             bytes_remaining--;
             byte_counter++;
             switch (processing) {
-            case MT_CONTROL_CHANGE:
-                switch (byte_counter) {
-                case 0:
-                    receive_buffer->ch.controller_num = buffer[i];
-                    break;
-                case 1:
-                    receive_buffer->ch.value = buffer[i];
-                    icom_receive_control_change(receive_buffer->ch);
-                    break;
-                default:
-                    //ERROR
-                }
-                break;
-            case MT_BUTTON_PRESS:
-                receive_buffer->bp.button_num = buffer[i];
-                icom_receive_button_press(receive_buffer->bp);
-                break;
-            case MT_LED_UPDATE:
-                break;
+                DESERIALIZE_CASE(control_change)
+                DESERIALIZE_CASE(button_press)
+                DESERIALIZE_CASE(led_update)
             default:
                 //ERROR _ UNKNOWN DATA
                 return;

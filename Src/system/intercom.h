@@ -13,7 +13,7 @@
  * in `message_size` array
  *
  */
-
+#define ICOM_LARGEST_STRUCT 16
 typedef struct Mcu_uid{
     u32 wafer_coordinate;
     u32 lot_number;
@@ -21,10 +21,10 @@ typedef struct Mcu_uid{
 }Mcu_uid;
 
 typedef enum {
-    MT_PING = 0,
-    MT_CONTROL_CHANGE = 1,
-    MT_BUTTON_PRESS = 2,
-    MT_LED_UPDATE = 3
+    MT_ping = 0,
+    MT_control_change = 1,
+    MT_button_press = 2,
+    MT_led_update = 3
 } Message_type;
 
 /**
@@ -35,6 +35,7 @@ u8 message_size[8];
 typedef struct {
     u8 controller_num;
     u8 value;
+ //   u8 abc;
 } Control_change;
 
 typedef struct {
@@ -44,6 +45,7 @@ typedef struct {
 typedef struct {
     u16 led_number;
     u8 intensity;
+
 } Led_update;
 
 /**
@@ -52,13 +54,19 @@ typedef struct {
  * as the largest structure
  */
 typedef union {
-    Control_change ch;
-    Button_press bp;
-    Led_update lu;
-} Icom_receive_buffer;
+    Control_change control_change;
+    Button_press button_press;
+    Led_update led_update;
+} Icom_serialization_buffer;
 
+typedef struct {
+    Mcu_uid uid;
+    u8 type;
+    Icom_serialization_buffer buffer;
+} Icom_send;
 void icom_send_control_change();
-void icom_send_button_press(u8 button_num);
+void icom_send_button_press(Button_press * input);
+
 
 extern void icom_receive_control_change(Control_change ch);
 extern void icom_receive_button_press(Button_press bp);

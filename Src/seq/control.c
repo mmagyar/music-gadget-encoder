@@ -63,7 +63,8 @@ void process_control() {
                 btn->button_state = btn->button_state ? 0 : 127;
                 send_note_on((Midi_channel) btn->channel, btn->button_note, 127);
             }
-            icom_send_button_press(i);
+            Button_press bp = {i};
+            icom_send_button_press(&bp);
         }
     }
 
