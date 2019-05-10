@@ -5,27 +5,26 @@
 #include  <sys/unistd.h> // STDOUT_FILENO, STDERR_FILENO
 #include "lib/printf.h"
 #include "seq/seq.h"
+#include "seq/control.h"
 #include "system/inputs.h"
 #include "system/led_update.h"
 #include "system/mux.h"
-#include  "util/midi/midi.h"
+#include "util/midi/midi.h"
 #include "util/dataframe.h"
-#include "system/uart.h"
+#include "system/intercom.h"
 
 Task tasks[max_task_count] = { };
 u32 ms_counter = 0;
 u32 ms_last = 0;
 const u8 TASK_INDEX_LED_UPDATE = 0;
-const u8 TASK_INDEX_SEQ_UPATE = 1;
+const u8 TASK_INDEX_SEQ_UPDATE = 1;
+const u8 TASK_INDEX_CONTROL_UPDATE = 2;
 void calculate_task_time(Task * task);
-void send_uart(u8 data) {
-    send_data_uart_4(data);
-}
-Frame_Receive_buffer bfr;
+
 void test_task() {
 
-    u8 * abc = (u8 *) "\r\nHEY SEXY\r\n";
-    send_on_the_fly(abc, 12, &send_uart);
+   // send_control_change(&ch);
+//    send_on_the_fly(abc, 12, &send_uart);
 
 }
 
@@ -43,10 +42,15 @@ void init_tasks() {
     midi_bytes_ready_to_send = send_buffer_uart_3;
 
     tasks[TASK_INDEX_LED_UPDATE].task = &update_display;
-    tasks[TASK_INDEX_SEQ_UPATE].task = &update_seq;
-    tasks[TASK_INDEX_SEQ_UPATE].repeat_ms = 16;
-    tasks[2].repeat_ms = 1000;
-    tasks[2].task = test_task;
+
+    tasks[TASK_INDEX_SEQ_UPDATE].task = &update_seq;
+    tasks[TASK_INDEX_SEQ_UPDATE].repeat_ms = 0;
+
+    tasks[TASK_INDEX_CONTROL_UPDATE].task = &process_control;
+    tasks[TASK_INDEX_CONTROL_UPDATE].repeat_ms = 16;
+
+    tasks[3].repeat_ms = 1000;
+    tasks[3].task = test_task;
 
     crc_feed = &crc_feed_stm32;
     crc_get = &crc_get_stm32;
