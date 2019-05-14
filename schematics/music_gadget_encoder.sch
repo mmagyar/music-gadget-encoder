@@ -1,5 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:DigiCtrl2-cache
+LIBS:music_gadget_encoder-cache
 EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
@@ -635,9 +635,9 @@ F 3 "" H 1850 3850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1850 3850 1650 3850
-Text Label 1650 3550 0    50   ~ 0
-USART3_TX
 Text Label 1650 3650 0    50   ~ 0
+USART3_TX
+Text Label 1650 3550 0    50   ~ 0
 USART3_RX
 Wire Wire Line
 	1850 3450 2100 3450
@@ -1368,9 +1368,9 @@ F 3 "" H 3050 4550 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3050 4550 2850 4550
-Text Label 750  4150 0    50   ~ 0
-USART4_TX
 Text Label 750  4250 0    50   ~ 0
+USART4_TX
+Text Label 750  4150 0    50   ~ 0
 USART4_RX
 $Comp
 L Connector_Generic:Conn_01x05 J_LEFT1
