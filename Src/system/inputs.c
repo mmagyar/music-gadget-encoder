@@ -25,10 +25,10 @@ const Encoder_pins encoder_pins[ENCODER_COUNT] = {
 };
 
 Encoder_data encoders[ENCODER_COUNT] = {
-        { 0xFF, 4, 0x00 },
-        { 0xFF, 2, 0x00 },
-        { 0xFF, 4, 0x00 },
-        { 0xFF, 4, 0x00 } };
+        { 0xFF, 4, 0x00, 0, 0, 0, 0 , 0, 0, 0, 0 },
+        { 0xFF, 2, 0x00, 0, 0, 0, 0 , 0, 0, 0, 0  },
+        { 0xFF, 4, 0x00, 0, 0, 0, 0 , 0, 0, 0, 0  },
+        { 0xFF, 4, 0x00, 0, 0, 0, 0 , 0, 0, 0, 0  } };
 
 inline void process_encoder_button(Encoder_data * encoder) {
     if (encoder->reset_button) {
@@ -110,9 +110,9 @@ inline void read_encoder_inputs() {
     }
 
 }
-u8 button_pressed[6] = { };
-u8 muxed_button[6] = { };
-bool muxed_button_ready[6] = { };
+u8 button_pressed[6] = { 0 };
+u8 muxed_button[6] = { 0 };
+bool muxed_button_ready[6] = { 0 };
 
 inline void mux_button_read() {
     volatile u16 read = LL_GPIO_ReadInputPort(BUTTONS_GPIO_Port);

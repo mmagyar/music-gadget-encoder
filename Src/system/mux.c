@@ -109,7 +109,7 @@ void multiplex() {
     send_current_led_data();
 
 }
-static void inline spi_rx_irq() {
+static inline void spi_rx_irq() {
     can_turn_off = global_brightness;
     wTransferState = TRANSFER_COMPLETE;
     LL_SPI_ReceiveData16(SPI1);

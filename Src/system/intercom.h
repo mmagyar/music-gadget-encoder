@@ -1,7 +1,7 @@
 #ifndef SYSTEM_INTERCOM_H_
 #define SYSTEM_INTERCOM_H_
 #include "../util/types.h"
-
+#include "../util/error_log.h"
 /**
  * Intercom between modules
  * Each message starts with the UID of the sending MCU - 12 bytes
@@ -13,12 +13,16 @@
  * in `message_size` array
  *
  */
+
 #define ICOM_LARGEST_STRUCT 16
-typedef struct Mcu_uid{
+
+#define MAX_PEERS 16
+typedef struct Mcu_uid {
     u32 wafer_coordinate;
     u32 lot_number;
     u32 wafer_number;
-}Mcu_uid;
+    u32 message_count;
+} Mcu_uid;
 
 typedef enum {
     MT_ping = 0,
@@ -35,7 +39,7 @@ u8 message_size[8];
 typedef struct {
     u8 controller_num;
     u8 value;
- //   u8 abc;
+//   u8 abc;
 } Control_change;
 
 typedef struct {
@@ -59,16 +63,24 @@ typedef union {
     Led_update led_update;
 } Icom_serialization_buffer;
 
+u32 message_count;
 typedef struct {
     Mcu_uid uid;
     u8 type;
     Icom_serialization_buffer buffer;
 } Icom_send;
+
+Mcu_uid peers[MAX_PEERS];
+
+/**
+ * This will read structs, there can be may structs following each other
+ */
+void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer);
+
 void icom_send_control_change();
 void icom_send_button_press(Button_press * input);
 
-
-extern void icom_receive_control_change(Control_change ch);
-extern void icom_receive_button_press(Button_press bp);
-extern void icom_receive_led_update(Led_update lu);
+void (*icom_receive_control_change)(Control_change ch);
+void (*icom_receive_button_press)(Button_press bp);
+void (*icom_receive_led_update)(Led_update lu);
 #endif /* SYSTEM_INTERCOM_H_ */

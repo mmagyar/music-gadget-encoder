@@ -5,11 +5,11 @@
 //10 columns 4 levels
 extern u16 led_data[10][intensity_gradients];
 
-#define intensity_off       0b00000000
-#define intensity_low       0b00000001
-#define intensity_low_med   0b00000101
-#define intensity_high_med  0b00010101
-#define intensity_high      0b00011111
+#define intensity_off       0x0 /*0b00000000*/
+#define intensity_low       0x1 /*0b00000001*/
+#define intensity_low_med   0x5 /*0b00000101*/
+#define intensity_high_med  0x15 /*0b00010101*/
+#define intensity_high      0x1F /*0b00011111*/
 
 typedef enum {
     IN_OFF = intensity_off,

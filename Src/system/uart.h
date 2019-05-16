@@ -6,6 +6,15 @@
 
 int print(char* input);
 
-void send_buffer_uart_3(Circular_buffer * uart_3);
+Circular_buffer uart_1_rx_buffer;
+Circular_buffer uart_2_rx_buffer;
+Circular_buffer uart_3_rx_buffer;
+Circular_buffer uart_4_rx_buffer;
+
+
+void send_data_uart_1(u8 data);
+void send_data_uart_2(u8 data);
+void send_data_uart_3(u8 data);
 void send_data_uart_4(u8 data);
+void send_data_uart_all(u8 data);
 #endif /* SYSTEM_UART_H_ */

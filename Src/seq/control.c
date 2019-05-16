@@ -7,27 +7,29 @@
 #include "../system/intercom.h"
 
 Control_encoder_config encoder_config[8] = {
-        { CT_INCREMENT, 0, 16 /* maybe 80 */, 1, 65, { CT_TOGGLE, 0, 32 } },
-        { CT_INCREMENT, 0, 17 /* maybe 81 */, 1, 65, { CT_TOGGLE, 0, 33 } },
-        { CT_INCREMENT, 0, 18 /* maybe 82 */, 1, 65, { CT_TOGGLE, 0, 34 } },
-        { CT_INCREMENT, 0, 19 /* maybe 83 */, 1, 65, { CT_TOGGLE, 0, 35 } },
-        { CT_INCREMENT, 0, 20, 1, 65, { CT_TOGGLE, 0, 36 } },
-        { CT_INCREMENT, 0, 21, 1, 65, { CT_TOGGLE, 0, 37 } },
-        { CT_INCREMENT, 0, 22, 1, 65, { CT_TOGGLE, 0, 38 } },
-        { CT_INCREMENT, 0, 23, 1, 65, { CT_TOGGLE, 0, 39 } },
+        { CT_INCREMENT, 0, 16 /* maybe 80 */, 1, 65, { CT_TOGGLE, 0, 32, 0 }, 0 },
+        { CT_INCREMENT, 0, 17 /* maybe 81 */, 1, 65, { CT_TOGGLE, 0, 33, 0 }, 0 },
+        { CT_INCREMENT, 0, 18 /* maybe 82 */, 1, 65, { CT_TOGGLE, 0, 34, 0 }, 0 },
+        { CT_INCREMENT, 0, 19 /* maybe 83 */, 1, 65, { CT_TOGGLE, 0, 35, 0 }, 0 },
+        { CT_INCREMENT, 0, 20, 1, 65, { CT_TOGGLE, 0, 36, 0 }, 0 },
+        { CT_INCREMENT, 0, 21, 1, 65, { CT_TOGGLE, 0, 37, 0 }, 0 },
+        { CT_INCREMENT, 0, 22, 1, 65, { CT_TOGGLE, 0, 38, 0 }, 0 },
+        { CT_INCREMENT, 0, 23, 1, 65, { CT_TOGGLE, 0, 39, 0 }, 0 },
 };
 
 Control_button_config buttons[6] = {
-        { CT_PRESS, 0, 93 }, /* STOP */
-        { CT_PRESS, 0, 94 }, /* PLAY */
-        { CT_PRESS, 0, 8 }, /* SOLO 1 */
-        { CT_PRESS, 0, 9 }, /* SOLO 2 */
-        { CT_PRESS, 0, 10 }, /* SOLO 3 */
-        { CT_PRESS, 0, 11 }, /* SOLO 4 */
+        { CT_PRESS, 0, 93, 0 }, /* STOP */
+        { CT_PRESS, 0, 94, 0 }, /* PLAY */
+        { CT_PRESS, 0, 8, 0 }, /* SOLO 1 */
+        { CT_PRESS, 0, 9, 0 }, /* SOLO 2 */
+        { CT_PRESS, 0, 10, 0 }, /* SOLO 3 */
+        { CT_PRESS, 0, 11, 0 }, /* SOLO 4 */
 };
 
-Counter encs[4] = { { 31 }, { 31 }, { 31 }, { 31 } };
-bool btns[6] = { };
+Counter encs[4] = {
+        { 31, OFB_SATURATE, 0 }, { 31, OFB_SATURATE, 0 },
+        { 31, OFB_SATURATE, 0 }, { 31, OFB_SATURATE, 0 } };
+bool btns[6] = { 0 };
 
 void led_update() {
     loop(x,4)
@@ -63,7 +65,7 @@ void process_control() {
                 btn->button_state = btn->button_state ? 0 : 127;
                 send_note_on((Midi_channel) btn->channel, btn->button_note, 127);
             }
-            Button_press bp = {i};
+            Button_press bp = { i };
             icom_send_button_press(&bp);
         }
     }

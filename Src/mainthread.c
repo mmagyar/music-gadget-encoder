@@ -12,19 +12,56 @@
 #include "util/midi/midi.h"
 #include "util/dataframe.h"
 #include "system/intercom.h"
+#include "system/uart.h"
 
-Task tasks[max_task_count] = { };
+Task tasks[max_task_count] = { 0 };
 u32 ms_counter = 0;
 u32 ms_last = 0;
 const u8 TASK_INDEX_LED_UPDATE = 0;
 const u8 TASK_INDEX_SEQ_UPDATE = 1;
 const u8 TASK_INDEX_CONTROL_UPDATE = 2;
+const u8 TASK_INDEX_COMM = 3;
+
 void calculate_task_time(Task * task);
 
-void test_task() {
+Icom_send icom_buffer[4] = { 0 };
+Frame_Receive_buffer frame_buffer[4] = { 0 };
 
-   // send_control_change(&ch);
-//    send_on_the_fly(abc, 12, &send_uart);
+volatile int a = 0;
+void test_receive_control_change(Control_change ch) {
+    a++;
+}
+void test_receive_button_press(Button_press bp) {
+    a++;
+}
+void test_receive_led_update(Led_update lu) {
+    a++;
+}
+void read_uart_rx_buffer() {
+    Circular_buffer * cb[4] = {
+            &uart_1_rx_buffer,
+            &uart_2_rx_buffer,
+            &uart_3_rx_buffer,
+            &uart_4_rx_buffer };
+
+    loop(x, 4)
+    {
+        Buffer_read_result brr = { 0 };
+        a = x;
+        if (a == 0)
+        pop_from_buffer(cb[x], &brr);
+        else {
+            pop_from_buffer(cb[x], &brr);
+        }
+
+        if (brr.readSuccess) {
+            bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
+            if (frame_end) {
+                icom_read_message(frame_buffer[x].buffer, frame_buffer[x].buffer_size,
+                        &icom_buffer[x]);
+            }
+        }
+    }
 
 }
 
@@ -39,7 +76,11 @@ u32 crc_get_stm32() {
 }
 void init_tasks() {
 
-    midi_bytes_ready_to_send = send_buffer_uart_3;
+    icom_receive_control_change = &test_receive_control_change;
+    icom_receive_button_press = &test_receive_button_press;
+    icom_receive_led_update = &test_receive_led_update;
+
+    //midi_bytes_ready_to_send = send_buffer_uart_3;
 
     tasks[TASK_INDEX_LED_UPDATE].task = &update_display;
 
@@ -47,10 +88,11 @@ void init_tasks() {
     tasks[TASK_INDEX_SEQ_UPDATE].repeat_ms = 0;
 
     tasks[TASK_INDEX_CONTROL_UPDATE].task = &process_control;
-    tasks[TASK_INDEX_CONTROL_UPDATE].repeat_ms = 16;
+    tasks[TASK_INDEX_CONTROL_UPDATE].repeat_ms = 160;
 
-    tasks[3].repeat_ms = 1000;
-    tasks[3].task = test_task;
+    tasks[TASK_INDEX_COMM].dont_reset_needs_run = true;
+    tasks[TASK_INDEX_COMM].needs_run = true;
+    tasks[TASK_INDEX_COMM].task = read_uart_rx_buffer;
 
     crc_feed = &crc_feed_stm32;
     crc_get = &crc_get_stm32;
@@ -60,8 +102,7 @@ char chr = 0;
 void main_thread() {
 
     init_tasks();
-    printf("\n\rSTARTING UP %d", 4);
-    print("START CTRL");
+    printf("\r\nSTARTING UP %d\r\n", 4);
 
     while (1) {
 
@@ -109,10 +150,9 @@ void main_thread() {
             {
                 Error * e = &error_log[ec];
                 if (e->error_code) {
-                    char to_print[128];
-                    sprintf(to_print, "ERR 0x%02X - %c : %s", e->error_code, e->identifier,
+                    printf("ERR 0x%02X - %c : %s", e->error_code, e->identifier,
                             error_code_text[(u8) e->error_code]);
-                    print(to_print);
+
                     e->error_code = 0;
                     e->identifier = 0;
                 }
@@ -140,7 +180,7 @@ void calculate_task_time(Task * task) {
     u64 last_avg = task->avg_time;
     u8 avgs = 8;
     u64 new_avg = 0;
-    loop(avg_i, (avgs - 1))
+    loop(avg_i, (avgs - 1U))
     {
         new_avg += last_avg;
     }

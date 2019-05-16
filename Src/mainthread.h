@@ -7,6 +7,7 @@
 #include "util/error_log.h"
 #include "util/types.h"
 #include "util/safe_array.h"
+#include "system/intercom.h"
 typedef void (*Run_task)();
 typedef struct Task {
     u16 id;

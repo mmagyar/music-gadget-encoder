@@ -8,19 +8,12 @@
 #include "../system/led_update.h"
 
 Seq seq = {
-        {
-                7,
-                OFB_WRAP_AROUND
-        },
-        { 31 },
-        { SEQ_LEVELS - 1 },
-        true,
-        120,
-        0,
-        0,
-//{{{255,-128},{255,INT8_MAX},{255,128},{255,127}}}
-        };
+COUNTER_WRAP_AROUND(7),
+COUNTER_SATURATE(31),
+COUNTER_SATURATE( SEQ_LEVELS - 1),
+true, 120, 0, 0, { { { 0 } } } };
 
+//{{{255,-128},{255,INT8_MAX},{255,128},{255,127}}}
 Midi_note notes[SEQ_LEVELS] = {
         C2,  //Bass drum
         D2,  //Snare
@@ -79,7 +72,10 @@ void animate_top_bar() {
                                 IN_HIGH : IN_OFF;
             }
             break;
+        default: //Should not happen
+            break;
         }
+
 
         if (anim.start_time + (anim.length * 10) <= current_time) {
             anim.start_time = 0;

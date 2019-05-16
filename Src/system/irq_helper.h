@@ -45,15 +45,15 @@
 
 #define UART_ERRORS_IRQ(USART_NUM, SHOW_UNEXPECTED_ERR) \
     if (LL_USART_IsActiveFlag_FE(USART ## USART_NUM)) { \
-        log_error(EC_UART_## USART_NUM ##_FRAMING_ERROR, 'i'); \
+        log_error(EC_UART_## USART_NUM ##_FRAMING_ERROR, 48 + USART_NUM); \
         LL_USART_ClearFlag_FE(USART ## USART_NUM); \
     } else if (LL_USART_IsActiveFlag_NE(USART ## USART_NUM)) { \
-        log_error(EC_UART_## USART_NUM ##_NOISE_ERROR, 'i'); \
+        log_error(EC_UART_## USART_NUM ##_NOISE_ERROR, 48 + USART_NUM); \
         LL_USART_ClearFlag_NE(USART ## USART_NUM); \
     } else if (LL_USART_IsActiveFlag_ORE(USART ## USART_NUM)) { \
-        log_error(EC_UART_## USART_NUM ##_OVERFLOW, 'i'); \
+        log_error(EC_UART_## USART_NUM ##_OVERFLOW, 48 + USART_NUM); \
         LL_USART_ClearFlag_ORE(USART ## USART_NUM); \
-    } else if (SHOW_UNEXPECTED_ERR) log_error(EC_UART_## USART_NUM ##_UNEXPECTED, 'i'); \
+    } else if (SHOW_UNEXPECTED_ERR) log_error(EC_UART_## USART_NUM ##_UNEXPECTED, 48 + USART_NUM); \
 
 #define UART_IRQ(USART_NUM, RX_CODE, TX_CODE, SHOW_UNEXPECTED_ERR) \
     IRQ_COMMON({ \

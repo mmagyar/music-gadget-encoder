@@ -5,10 +5,10 @@
 #include "../mainthread.h"
 #include "../system/inputs.h"
 
-u16 led_data[10][intensity_gradients] = { };
-Led_display display = { DT_PRECISE };
+u16 led_data[10][intensity_gradients] = { 0 };
+Led_display display = { DT_PRECISE, 0, { 0 }, { { { 0 }, { 0 }, 0, 0 } } };
 
-Intensity led_intensity[10][16] = { };
+Intensity led_intensity[10][16] = { 0 };
 inline void intensity_calc(u8 column) {
     Intensity * c_i = led_intensity[column];
 
@@ -99,7 +99,6 @@ void led_calculate_bar_signed_16(s8 signed_value, Intensity * target) {
             target[i] = intensity_off;
             target[i + 8] = intensity_off;
         }
-
 
     }
 
