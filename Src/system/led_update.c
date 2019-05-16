@@ -9,6 +9,7 @@ u16 led_data[10][intensity_gradients] = { 0 };
 Led_display display = { DT_PRECISE, 0, { 0 }, { { { 0 }, { 0 }, 0, 0 } } };
 
 Intensity led_intensity[10][16] = { 0 };
+void intensity_calc(u8 column);
 inline void intensity_calc(u8 column) {
     Intensity * c_i = led_intensity[column];
 

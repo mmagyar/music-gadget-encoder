@@ -17,7 +17,7 @@
     send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)));
 
 #define DESERIALIZE(STRUCT_NAME) \
-        ((u8*)&receive_buffer->buffer.STRUCT_NAME)[byte_counter] = buffer[i]; \
+        ((u8*)&receive_buffer->buffer.STRUCT_NAME)[byte_counter++] = buffer[i]; \
                 if (byte_counter >= message_size[receive_buffer->type]) { \
                     icom_receive_ ## STRUCT_NAME(receive_buffer->buffer.STRUCT_NAME); \
                 } \
@@ -101,7 +101,7 @@ bool mcu_uid_increment_count(u16 local_id, Mcu_uid * input) {
                 } else {
                     if (current + 1 == new) {
                         //New message with no missing messages, this is the normal operating point
-                    } else if (current <= new) {
+                    } else if (new <= current) {
                         //Duplicate message, it should be ignored
                         return false;
                     } else {
@@ -149,7 +149,19 @@ void icom_send_control_change(Control_change * input) {
 }
 
 void icom_send_button_press(Button_press * input) {
-    SERIALIZE(button_press)
+    //  SERIALIZE(button_press)
+    Mcu_uid uid = get_uid_and_increment_counter();
+    u8* uid_byte = (u8*) &uid;
+    u8 send[16 + 1 + (sizeof(Mcu_uid))];
+    for (u32 x = 0; x < ((sizeof(Mcu_uid))); x++) {
+        send[x] = uid_byte[x];
+    }
+    send[(sizeof(Mcu_uid))] = MT_button_press;
+    u8 struct_size = message_size[MT_button_press];
+    for (u32 x = 0; x < (struct_size); x++) {
+        send[x + 1 + (sizeof(Mcu_uid))] = ((u8*) input)[x];
+    }
+    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)));
 }
 
 void icom_send_led_update(Led_update * input) {
@@ -174,6 +186,7 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             sender_id_bytes_left--;
         } else if (!in_process) { //Start of a new struct
             receive_buffer->type = buffer[i];
+            processing = buffer[i];
             //Check if we already know this module
             u16 index = mcu_uid_get_index(&receive_buffer->uid);
             //This means it is a new one, so we need to add it.
@@ -191,13 +204,15 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             }
             bytes_remaining = message_size[processing];
             byte_counter = 0;
-            if (processing != MT_ping) in_process = true;
+            in_process = true;
+
         } else {
-            bytes_remaining--;
 
             if (!bytes_remaining) {
                 in_process = false;
             }
+
+            bytes_remaining--;
 
             if (!do_processing) {
                 continue;
@@ -206,11 +221,17 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             switch (processing) {
             case MT_ping:
                 break;
+//            case MT_control_change:
+//                ((u8*) &receive_buffer->buffer.control_change)[byte_counter++] = buffer[i];
+//                if (byte_counter >= message_size[receive_buffer->type]) {
+//                    icom_receive_control_change(receive_buffer->buffer.control_change);
+//                }
+//                break;
             DESERIALIZE_CASE(control_change)
                             DESERIALIZE_CASE(button_press)
                             DESERIALIZE_CASE(led_update)
                             default:
-                //ERROR _ UNKNOWN DATA
+                log_error(EC_COMM_UNKOWN_MESSAGE_STRUCTURE, buffer[i]);
                 return;
             }
         }

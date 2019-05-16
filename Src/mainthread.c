@@ -27,15 +27,15 @@ void calculate_task_time(Task * task);
 Icom_send icom_buffer[4] = { 0 };
 Frame_Receive_buffer frame_buffer[4] = { 0 };
 
-volatile int a = 0;
+volatile int azz = 0;
 void test_receive_control_change(Control_change ch) {
-    a++;
+    azz++;
 }
 void test_receive_button_press(Button_press bp) {
-    a++;
+    azz++;
 }
 void test_receive_led_update(Led_update lu) {
-    a++;
+    azz++;
 }
 void read_uart_rx_buffer() {
     Circular_buffer * cb[4] = {
@@ -47,17 +47,13 @@ void read_uart_rx_buffer() {
     loop(x, 4)
     {
         Buffer_read_result brr = { 0 };
-        a = x;
-        if (a == 0)
+
         pop_from_buffer(cb[x], &brr);
-        else {
-            pop_from_buffer(cb[x], &brr);
-        }
 
         if (brr.readSuccess) {
             bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
             if (frame_end) {
-                icom_read_message(frame_buffer[x].buffer, frame_buffer[x].buffer_size,
+                icom_read_message(frame_buffer[x].buffer, frame_buffer[x].message_size,
                         &icom_buffer[x]);
             }
         }
@@ -150,7 +146,7 @@ void main_thread() {
             {
                 Error * e = &error_log[ec];
                 if (e->error_code) {
-                    printf("ERR 0x%02X - %c : %s", e->error_code, e->identifier,
+                    printf("\r\nERR 0x%02X - %c : %s\r\n", e->error_code, e->identifier,
                             error_code_text[(u8) e->error_code]);
 
                     e->error_code = 0;

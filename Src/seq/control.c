@@ -5,7 +5,7 @@
 #include "../system/led_update.h"
 #include "../util/counter.h"
 #include "../system/intercom.h"
-
+#define MIDI_ON false
 Control_encoder_config encoder_config[8] = {
         { CT_INCREMENT, 0, 16 /* maybe 80 */, 1, 65, { CT_TOGGLE, 0, 32, 0 }, 0 },
         { CT_INCREMENT, 0, 17 /* maybe 81 */, 1, 65, { CT_TOGGLE, 0, 33, 0 }, 0 },
@@ -59,11 +59,12 @@ void process_control() {
             Control_button_config * btn = &buttons[i];
             if (btn->type == CT_TOGGLE) {
                 btn->button_state = btn->button_state ? 0 : 127;
-                send_note_on((Midi_channel) btn->channel, btn->button_note, btn->button_state);
+                if (MIDI_ON) send_note_on((Midi_channel) btn->channel, btn->button_note,
+                        btn->button_state);
 
             } else {
                 btn->button_state = btn->button_state ? 0 : 127;
-                send_note_on((Midi_channel) btn->channel, btn->button_note, 127);
+                if (MIDI_ON) send_note_on((Midi_channel) btn->channel, btn->button_note, 127);
             }
             Button_press bp = { i };
             icom_send_button_press(&bp);
@@ -81,14 +82,16 @@ void process_control() {
             while (*step != 0) {
                 if (*step > 0) {
                     *step -= 1;
-                    send_cc((Midi_channel) encoder->channel, (Midi_cc_number) encoder->cc,
+                    if (MIDI_ON) send_cc((Midi_channel) encoder->channel,
+                            (Midi_cc_number) encoder->cc,
                             encoder->increment_value);
                     counter_inc(&encs[x]);
 
                 } else {
                     *step += 1;
                     counter_dec(&encs[x]);
-                    send_cc((Midi_channel) encoder->channel, (Midi_cc_number) encoder->cc,
+                    if (MIDI_ON) send_cc((Midi_channel) encoder->channel,
+                            (Midi_cc_number) encoder->cc,
                             encoder->decrement_value);
                 }
             }
@@ -105,7 +108,7 @@ void process_control() {
 
             }
             counter_set(encoder->data, &encs[x]);
-            send_cc((Midi_channel) encoder->channel, (Midi_cc_number) encoder->cc,
+            if (MIDI_ON) send_cc((Midi_channel) encoder->channel, (Midi_cc_number) encoder->cc,
                     encoder->data);
         }
 

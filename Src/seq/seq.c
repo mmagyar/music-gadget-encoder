@@ -25,6 +25,15 @@ Midi_channel channel = CH10;
 Midi_cc_number cc = CC_CH_046;
 #define max_parts 8
 
+void seq_next_part();
+void seq_prev_part();
+void seq_next_level();
+void seq_prev_level();
+
+void animate_flash(u8 data, Seq_animation * anim, bool light_variant);
+Seq_animation anim;
+
+
 u16 bpm_to_4th_ms(u8 bpm) {
     return 60000 / bpm;
 }
