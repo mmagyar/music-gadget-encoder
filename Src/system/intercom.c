@@ -221,13 +221,13 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             switch (processing) {
             case MT_ping:
                 break;
-//            case MT_control_change:
-//                ((u8*) &receive_buffer->buffer.control_change)[byte_counter++] = buffer[i];
-//                if (byte_counter >= message_size[receive_buffer->type]) {
-//                    icom_receive_control_change(receive_buffer->buffer.control_change);
-//                }
-//                break;
-            DESERIALIZE_CASE(control_change)
+            case MT_control_change:
+                ((u8*) &receive_buffer->buffer.control_change)[byte_counter++] = buffer[i];
+                if (byte_counter >= message_size[receive_buffer->type]) {
+                    icom_receive_control_change(receive_buffer->buffer.control_change);
+                }
+                break;
+            //DESERIALIZE_CASE(control_change)
                             DESERIALIZE_CASE(button_press)
                             DESERIALIZE_CASE(led_update)
                             default:

@@ -4,7 +4,7 @@
 #include "../util/circular_buffer.h"
 #include "../util/error_log.h"
 
-int print(char* input);
+u32 receive_uarts;
 
 Circular_buffer uart_1_rx_buffer;
 Circular_buffer uart_2_rx_buffer;

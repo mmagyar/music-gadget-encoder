@@ -30,6 +30,7 @@ typedef struct Task {
 const u8 TASK_INDEX_LED_UPDATE;
 Task tasks[max_task_count];
 
+u32 received_frames_count;
 void main_thread();
 
 #endif /* MAINTHREAD_H_ */

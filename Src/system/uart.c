@@ -4,16 +4,18 @@
 #include "../util/error_log.h"
 #include "../lib/printf.h"
 #include "../system/irq_helper.h"
-#define UART_BUFFER_SIZE 8
+#define UART_BUFFER_SIZE 11
+
+u32 receive_uarts=0;
 
 def_Circular_buffer(uart_1_rx_buffer, UART_BUFFER_SIZE, '1');
-def_Circular_buffer(uart_1_tx_buffer, UART_BUFFER_SIZE, '1');
+def_Circular_buffer(uart_1_tx_buffer, UART_BUFFER_SIZE, '5');
 def_Circular_buffer(uart_2_rx_buffer, UART_BUFFER_SIZE, '2');
-def_Circular_buffer(uart_2_tx_buffer, UART_BUFFER_SIZE, '2');
+def_Circular_buffer(uart_2_tx_buffer, UART_BUFFER_SIZE, '6');
 def_Circular_buffer(uart_3_rx_buffer, UART_BUFFER_SIZE, '3');
-def_Circular_buffer(uart_3_tx_buffer, UART_BUFFER_SIZE, '3');
+def_Circular_buffer(uart_3_tx_buffer, UART_BUFFER_SIZE, '7');
 def_Circular_buffer(uart_4_rx_buffer, UART_BUFFER_SIZE, '4');
-def_Circular_buffer(uart_4_tx_buffer, UART_BUFFER_SIZE, '4');
+def_Circular_buffer(uart_4_tx_buffer, UART_BUFFER_SIZE, '8');
 
 
 
@@ -104,6 +106,7 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
     UART_HANDLER(2, true);
+    receive_uarts++;
 }
 
 volatile int a = 0;

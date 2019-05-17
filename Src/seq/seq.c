@@ -116,8 +116,8 @@ bool update_seq_position() {
     u32 cms = seq.current_ms;
 
     if (cms < seq.start_ms) {
-        printf("Invalid sequencer status, current: %d behind start ms: %d, "
-                "resetting start to current of %d\r\n", cms, seq.start_ms, seq.current_ms);
+        //printf("Invalid sequencer status, current: %d behind start ms: %d, "
+          //      "resetting start to current of %d\r\n", cms, seq.start_ms, seq.current_ms);
         seq.start_ms = cms;
     }
     u16 sixteenth = bpm_to_4th_ms(seq.bpm) / 4;

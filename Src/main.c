@@ -84,7 +84,6 @@ static void MX_NVIC_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
-
 /**
  * @brief  The application entry point.
  * @retval int
@@ -176,6 +175,7 @@ int main(void)
     LL_USART_EnableIT_RXNE(USART1);
     LL_USART_EnableIT_ERROR(USART1);
 //    LL_USART_TransmitData8(USART4, 'x');
+
 
     main_thread();
 
