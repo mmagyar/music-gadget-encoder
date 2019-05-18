@@ -51,10 +51,11 @@ void read_uart_rx_buffer() {
     {
         Buffer_read_result brr = { 0 };
 
-        pop_from_buffer(cb[x], &brr);
+        get_from_buffer(cb[x], &brr);
 
         if (brr.readSuccess) {
-            bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
+          bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
+
             if (frame_end) {
                 received_frames_count++;
                 icom_read_message(frame_buffer[x].buffer, frame_buffer[x].message_size,
@@ -65,14 +66,15 @@ void read_uart_rx_buffer() {
 
 }
 
-void error_print(){
+void error_print() {
     if (error_count) {
-        loop(ec, error_count)
+        printf("\r\nTotal number of errors occured: %d\r\n", error_count);
+        loop(ec, ERROR_LOG_SIZE)
         {
             Error * e = &error_log[ec];
             if (e->error_code) {
-            //    printf("\r\nERR 0x%02X - %c : %s\r\n", e->error_code, e->identifier,
-            //            error_code_text[(u8) e->error_code]);
+                    printf("ERR 0x%02X - %c : %s\r\n", e->error_code, e->identifier,
+                            error_code_text[(u8) e->error_code]);
 
                 e->error_code = 0;
                 e->identifier = 0;
@@ -83,8 +85,8 @@ void error_print(){
     }
 }
 
-volatile int abcd= 0;
-void test(){
+volatile int abcd = 0;
+void test() {
     Control_change ch = { 1, abcd++ };
     icom_send_control_change(&ch);
 }
@@ -99,7 +101,15 @@ u32 crc_get_stm32() {
 }
 void init_tasks() {
 
-    icom_receive_control_change = &test_receive_control_change;
+    /**
+     * Stack guard
+     */
+    u32 memory_end = 0x20009000;
+    u32 stack_beginning = memory_end - 0x400;
+    u32 deadbeef_addr = stack_beginning - 0x8;
+    u32 * var = (u32 *)deadbeef_addr;
+    * var = 0xEFBEADDE;
+    icom_receive_control_change = test_receive_control_change;
     icom_receive_button_press = &test_receive_button_press;
     icom_receive_led_update = &test_receive_led_update;
 
@@ -121,8 +131,8 @@ void init_tasks() {
 
     tasks[TASK_ERROR_PRINT].task = error_print;
     tasks[TASK_ERROR_PRINT].repeat_ms = 100;
-    //tasks[7].repeat_ms = true;
-    //tasks[7].task = &test;
+  // tasks[7].repeat_ms = true;
+  //  tasks[7].task = &test;
 
     crc_feed = &crc_feed_stm32;
     crc_get = &crc_get_stm32;
@@ -131,13 +141,11 @@ char chr = 0;
 u64 aha = 0;
 void main_thread() {
 
-    volatile int asdf[199] = {0};
     init_tasks();
     printf("\r\nSTARTING UP %d\r\n", 4);
 
     while (1) {
-aha++;
-asdf[aha] = aha;
+
         if (ms_counter != ms_last) {
             loop(task_i, max_task_count)
             {
@@ -149,10 +157,7 @@ asdf[aha] = aha;
                 }
             }
 
-            if(asdf[aha])
             ms_last = ms_counter;
-            else
-                ms_last = ms_counter;
         }
         loop(task_i, max_task_count)
         {
@@ -179,7 +184,6 @@ asdf[aha] = aha;
             //  button_pressed[0]--;
             // printf("HELLO, loop time of led update: %d\r\n", (int) tasks[0].avg_time);
         }
-
 
     }
 
@@ -225,10 +229,10 @@ void HardFault_Handler(void)
 {
     /* USER CODE BEGIN HardFault_IRQn 0 */
 
-
     LL_SPI_TransmitData16(SPI1, 0xAAAA);
     mux_off();
-    printf("HARD FAULT, receive_frame_count: %d , uart bytes: %d",received_frames_count,receive_uarts);
+    printf("HARD FAULT, receive_frame_count: %d , uart bytes: %d", received_frames_count,
+            receive_uarts);
     volatile int b = 0;
     volatile int a_max = 0xFFFFF >> 1;
     volatile int a = a_max;
