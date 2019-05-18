@@ -4,7 +4,7 @@
 #include "../util/error_log.h"
 #include "../lib/printf.h"
 #include "../system/irq_helper.h"
-#define UART_BUFFER_SIZE 10
+#define UART_BUFFER_SIZE 256U
 
 u32 receive_uarts = 0;
 
