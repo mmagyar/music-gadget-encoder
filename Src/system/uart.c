@@ -4,9 +4,9 @@
 #include "../util/error_log.h"
 #include "../lib/printf.h"
 #include "../system/irq_helper.h"
-#define UART_BUFFER_SIZE 11
+#define UART_BUFFER_SIZE 10
 
-u32 receive_uarts=0;
+u32 receive_uarts = 0;
 
 def_Circular_buffer(uart_1_rx_buffer, UART_BUFFER_SIZE, '1');
 def_Circular_buffer(uart_1_tx_buffer, UART_BUFFER_SIZE, '5');
@@ -16,8 +16,6 @@ def_Circular_buffer(uart_3_rx_buffer, UART_BUFFER_SIZE, '3');
 def_Circular_buffer(uart_3_tx_buffer, UART_BUFFER_SIZE, '7');
 def_Circular_buffer(uart_4_rx_buffer, UART_BUFFER_SIZE, '4');
 def_Circular_buffer(uart_4_tx_buffer, UART_BUFFER_SIZE, '8');
-
-
 
 void send_data_uart_1(u8 data) {
     add_to_buffer(&uart_1_tx_buffer, data);
@@ -47,9 +45,17 @@ void send_data_uart_all(u8 data) {
 }
 
 void _putchar(char character) {
+
+    while (!LL_USART_IsActiveFlag_TXE_TXFNF(USART3)) {
+    }
+    LL_USART_TransmitData8(USART3, character);
+    LL_USART_DisableIT_TXE_TXFNF(USART3);
+
+    return;
     if (!add_to_buffer_if_not_full(&uart_3_tx_buffer, character)) {
         log_error(EC_PRINT_BUFFER_FULL, 'c');
     } else {
+
         LL_USART_EnableIT_TXE_TXFNF(USART3);
     }
 }
@@ -91,7 +97,6 @@ UART_TX(4)
 //    printf("0x%04X\r\n", data);
 //}
 
-
 /**
  * @brief This function handles USART1 global interrupt / USART1 wake-up interrupt through EXTI line 25.
  */
@@ -115,7 +120,7 @@ volatile int a = 0;
  */
 void USART3_4_IRQHandler(void)
 {
-    if(LL_USART_IsActiveFlag_RXNE(USART4)){
+    if (LL_USART_IsActiveFlag_RXNE(USART4)) {
         a++;
     }
     UART_HANDLER(4, false);
