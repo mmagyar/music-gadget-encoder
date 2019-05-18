@@ -22,7 +22,6 @@ LED_MUX_7_Pin, LED_MUX_8_Pin, LED_MUX_9_Pin,
 u8 rotate_c = 0;
 u8 current_mux = 0;
 u8 current_bit = 0;
-s8 can_turn_off = 0;
 
 /* transfer state */
 volatile TS wTransferState = TRANSFER_COMPLETE;
@@ -62,10 +61,6 @@ static inline void previous_mux_off() {
 
 }
 
-static inline void send_current_led_data() {
-    wTransferState = TRANSFER_WAIT;
-    LL_SPI_TransmitData16(SPI1, led_data[rotate_c][current_bit]);
-}
 
 static inline void turn_on_current_channel() {
     switch_mux_on(rotate_c);
@@ -81,39 +76,34 @@ static inline void turn_on_current_channel() {
         rotate_c++;
     }
 }
-//
-//void HAL_SPI_ErrorCallback() {
-//    wTransferState = TRANSFER_ERROR;
-//}
-const u8 global_brightness = 4;
 
-void multiplex() {
-    if (wTransferState == TRANSFER_WAIT) {
-        return;
-    }
-    if (can_turn_off > 0) {
-        if (can_turn_off == global_brightness) {
-
-            previous_mux_off();
-        }
-        can_turn_off--;
-
-        return;
-    } else if (global_brightness == 0) {
-
+u8 mux_state = 0;
+u8 mux_max = 5;
+void multiplex(){
+    switch (mux_state) {
+    case 0:
         previous_mux_off();
+        mux_state++;
+        break;
+    case 1:
+        LL_SPI_TransmitData16(SPI1, led_data[rotate_c][current_bit]);
+        mux_state++;
+        break;
+    case 2:
+        turn_on_current_channel();
+        mux_state++;
+        break;
+    default:
+        mux_state++;
     }
 
-    /* Turn off all transistors when sending data to the led driver */
-
-    send_current_led_data();
-
+    if(mux_state >= mux_max){
+        mux_state = 0;
+    }
 }
+
 static inline void spi_rx_irq() {
-    can_turn_off = global_brightness;
-    wTransferState = TRANSFER_COMPLETE;
-    LL_SPI_ReceiveData16(SPI1);
-    turn_on_current_channel();
+   volatile u16 data =  LL_SPI_ReceiveData16(SPI1);
 }
 
 /**
