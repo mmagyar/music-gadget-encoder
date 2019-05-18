@@ -30,7 +30,7 @@ void seq_prev_part();
 void seq_next_level();
 void seq_prev_level();
 
-void animate_flash(u8 data, Seq_animation * anim, bool light_variant);
+void animate_flash(u8 data, Seq_animation * animation, bool light_variant);
 Seq_animation anim;
 
 
@@ -255,14 +255,14 @@ void update_seq() {
     animate_top_bar();
 }
 
-void animate_flash(u8 data, Seq_animation * anim, bool light_variant) {
-    anim->need_run = true;
-    anim->data = data;
-    anim->speed = 7;
-    anim->length = 50;
-    anim->start_time = 0;
-    anim->light_pattern = light_variant ? 0xF : 0x9;
-    anim->anim = SEQ_ANIM_FLASH_NUM;
+void animate_flash(u8 data, Seq_animation * animation, bool light_variant) {
+    animation->need_run = true;
+    animation->data = data;
+    animation->speed = 7;
+    animation->length = 50;
+    animation->start_time = 0;
+    animation->light_pattern = light_variant ? 0xF : 0x9;
+    animation->anim = SEQ_ANIM_FLASH_NUM;
 
 }
 
