@@ -4,7 +4,8 @@
 #include "../util/error_log.h"
 #include "../lib/printf.h"
 #include "../system/irq_helper.h"
-#define UART_BUFFER_SIZE 256U
+#define UART_BUFFER_SIZE 1024
+//256U
 
 u32 receive_uarts = 0;
 
@@ -46,12 +47,12 @@ void send_data_uart_all(u8 data) {
 
 void _putchar(char character) {
 
-    while (!LL_USART_IsActiveFlag_TXE_TXFNF(USART3)) {
-    }
-    LL_USART_TransmitData8(USART3, character);
-    LL_USART_DisableIT_TXE_TXFNF(USART3);
+//    while (!LL_USART_IsActiveFlag_TXE_TXFNF(USART3)) {
+//    }
+//    LL_USART_TransmitData8(USART3, character);
+//    LL_USART_DisableIT_TXE_TXFNF(USART3);
+//
 
-    return;
     if (!add_to_buffer_if_not_full(&uart_3_tx_buffer, character)) {
         log_error(EC_PRINT_BUFFER_FULL, 'c');
     } else {
@@ -92,10 +93,6 @@ UART_TX(3)
 UART_RX(4)
 UART_TX(4)
 
-//void uart_3_rx_fn() {
-//    char data = LL_USART_ReceiveData8(USART3);
-//    printf("0x%04X\r\n", data);
-//}
 
 /**
  * @brief This function handles USART1 global interrupt / USART1 wake-up interrupt through EXTI line 25.

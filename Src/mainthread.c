@@ -33,6 +33,7 @@ Frame_Receive_buffer frame_buffer[4] = { 0 };
 volatile int azz = 0;
 void test_receive_control_change(Control_change ch) {
     azz++;
+    //icom_send_control_change(&ch);
 }
 void test_receive_button_press(Button_press bp) {
     azz++;
@@ -54,7 +55,7 @@ void read_uart_rx_buffer() {
         get_from_buffer(cb[x], &brr);
 
         if (brr.readSuccess) {
-          bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
+            bool frame_end = receive_byte(brr.data, &frame_buffer[x]);
 
             if (frame_end) {
                 received_frames_count++;
@@ -73,8 +74,8 @@ void error_print() {
         {
             Error * e = &error_log[ec];
             if (e->error_code) {
-                    printf("ERR 0x%02X - %c : %s\r\n", e->error_code, e->identifier,
-                            error_code_text[(u8) e->error_code]);
+                printf("ERR 0x%02X - %c (%d) : %s\r\n", e->error_code, e->identifier, e->identifier,
+                        error_code_text[(u8) e->error_code]);
 
                 e->error_code = 0;
                 e->identifier = 0;
@@ -87,13 +88,31 @@ void error_print() {
 
 volatile int abcd = 0;
 void test() {
-    Control_change ch = { 1, abcd++ };
-    icom_send_control_change(&ch);
+    return;
+    loop(x,8)
+    {
+        Control_change ch = { x, x * 2 };
+        icom_send_control_change(&ch);
+        volatile int i = 0;
+        while (i < 100) {
+            i++;
+        }
+
+    }
+
+    //  Control_change ch = { 1, abcd++ };
+    //  icom_send_control_change(&ch);
 }
-void crc_feed_stm32(u8 byte) {
+void crc_feed_stm32(Crc_state state, u8 byte) {
     LL_CRC_FeedData8(CRC, byte);
 }
-u32 crc_get_stm32() {
+
+Crc_state crc_init_stm32() {
+    LL_CRC_ResetCRCCalculationUnit(CRC);
+    return 0;
+}
+
+u32 crc_get_stm32(Crc_state state) {
     u32 data = LL_CRC_ReadData32(CRC);
     LL_CRC_ResetCRCCalculationUnit(CRC);
     /* We need to invert it to get a standard CRC32*/
@@ -107,8 +126,8 @@ void init_tasks() {
     u32 memory_end = 0x20009000;
     u32 stack_beginning = memory_end - 0x400;
     u32 deadbeef_addr = stack_beginning - 0x8;
-    u32 * var = (u32 *)deadbeef_addr;
-    * var = 0xEFBEADDE;
+    u32 * var = (u32 *) deadbeef_addr;
+    *var = 0xEFBEADDE;
     icom_receive_control_change = test_receive_control_change;
     icom_receive_button_press = &test_receive_button_press;
     icom_receive_led_update = &test_receive_led_update;
@@ -131,11 +150,12 @@ void init_tasks() {
 
     tasks[TASK_ERROR_PRINT].task = error_print;
     tasks[TASK_ERROR_PRINT].repeat_ms = 100;
-  // tasks[7].repeat_ms = true;
-  //  tasks[7].task = &test;
+    tasks[7].repeat_ms = 1000;
+    tasks[7].task = &test;
 
     crc_feed = &crc_feed_stm32;
     crc_get = &crc_get_stm32;
+    crc_init = &crc_init_stm32;
 }
 char chr = 0;
 u64 aha = 0;
@@ -143,6 +163,12 @@ void main_thread() {
 
     init_tasks();
     printf("\r\nSTARTING UP %d\r\n", 4);
+
+    loop(x,5)
+    {
+        Control_change ch = { x, x * 2 };
+        //      icom_send_control_change(&ch);
+    }
 
     while (1) {
 
