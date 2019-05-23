@@ -31,14 +31,14 @@ Icom_send icom_buffer[4] = { 0 };
 Frame_Receive_buffer frame_buffer[4] = { 0 };
 
 volatile int azz = 0;
-void test_receive_control_change(Control_change ch) {
+void test_receive_control_change(Mcu_uid * origin, Control_change ch) {
     azz++;
-    //icom_send_control_change(&ch);
+ //   icom_send_control_change(&ch);
 }
-void test_receive_button_press(Button_press bp) {
+void test_receive_button_press(Mcu_uid * origin, Button_press bp) {
     azz++;
 }
-void test_receive_led_update(Led_update lu) {
+void test_receive_led_update(Mcu_uid * origin, Led_update lu) {
     azz++;
 }
 void read_uart_rx_buffer() {
@@ -60,7 +60,7 @@ void read_uart_rx_buffer() {
             if (frame_end) {
                 received_frames_count++;
                 icom_read_message(frame_buffer[x].buffer, frame_buffer[x].message_size,
-                        &icom_buffer[x]);
+                        &icom_buffer[x], x + 1);
             }
         }
     }

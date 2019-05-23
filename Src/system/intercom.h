@@ -75,12 +75,12 @@ Mcu_uid peers[MAX_PEERS];
 /**
  * This will read structs, there can be may structs following each other
  */
-void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer);
+void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer, u8 source_port);
 
 void icom_send_control_change();
 void icom_send_button_press(Button_press * input);
 
-void (*icom_receive_control_change)(Control_change ch);
-void (*icom_receive_button_press)(Button_press bp);
-void (*icom_receive_led_update)(Led_update lu);
+void (*icom_receive_control_change)(Mcu_uid * origin, Control_change ch);
+void (*icom_receive_button_press)(Mcu_uid * origin, Button_press bp);
+void (*icom_receive_led_update)(Mcu_uid * origin, Led_update lu);
 #endif /* SYSTEM_INTERCOM_H_ */

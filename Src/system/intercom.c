@@ -4,27 +4,39 @@
 #include "stm32g070xx.h"
 #include "../util/safe_array.h"
 
-#define SERIALIZE(STRUCT_NAME) \
-    Mcu_uid uid = get_uid_and_increment_counter(); \
-    u8* uid_byte = (u8*)&uid; \
+#define DO_FORWARD true
+#define SERIALIZE_FORWARD(MCU_UID_PTR, STRUCT_NAME, STRUCT_VARIABLE, SKIP_PORT) \
+    u8* uid_byte = (u8*)(MCU_UID_PTR); \
     u8  send[ICOM_LARGEST_STRUCT + 1 + (sizeof(Mcu_uid))]; \
     loop(x, (sizeof(Mcu_uid))) {send[x] = uid_byte[x]; } \
     send[(sizeof(Mcu_uid))] =  MT_ ## STRUCT_NAME; \
     u8 struct_size = message_size[MT_ ## STRUCT_NAME]; \
     loop(x, struct_size) { \
-        send[x + 1 + (sizeof(Mcu_uid))] = ((u8* ) input)[x];  \
+        send[x + 1 + (sizeof(Mcu_uid))] = ((u8* ) STRUCT_VARIABLE)[x];  \
     }\
-    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)));
+    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)), SKIP_PORT);
+
+#define SERIALIZE(STRUCT_NAME) \
+    Mcu_uid uid = get_uid_and_increment_counter(); \
+    SERIALIZE_FORWARD(&uid, STRUCT_NAME, input,  0xFF);
 
 #define DESERIALIZE(STRUCT_NAME) \
         ((u8*)&receive_buffer->buffer.STRUCT_NAME)[byte_counter++] = buffer[i]; \
                 if (byte_counter >= message_size[receive_buffer->type]) { \
-                    icom_receive_ ## STRUCT_NAME(receive_buffer->buffer.STRUCT_NAME); \
-                } \
+                    icom_receive_ ## STRUCT_NAME(peer, receive_buffer->buffer.STRUCT_NAME); \
+
+#ifdef DO_FORWARD
+#define FORWARD(STRUCT_NAME, SKIP_PORT) \
+    SERIALIZE_FORWARD(peer, STRUCT_NAME, (&receive_buffer->buffer.STRUCT_NAME), SKIP_PORT );
+#else
+#define FORWARD(STRUCT_NAME)
+#endif
 
 #define DESERIALIZE_CASE(STRUCT_NAME) \
     case MT_ ## STRUCT_NAME : \
         DESERIALIZE(STRUCT_NAME) \
+        FORWARD(STRUCT_NAME, source_port) \
+                }\
     break;
 
 Mcu_uid peers[MAX_PEERS] = { 0 };
@@ -52,7 +64,11 @@ u16 mcu_uid_get_index(Mcu_uid * input) {
     }
     return 0xFFFF;
 }
-bool mcu_uid_insert_first_empty(Mcu_uid * input) {
+
+/**
+ * Returns the index it inserted into
+ */
+u16 mcu_uid_insert_first_empty(Mcu_uid * input) {
     loop(x,MAX_PEERS)
     {
         Mcu_uid * id = &peers[x];
@@ -60,7 +76,7 @@ bool mcu_uid_insert_first_empty(Mcu_uid * input) {
             if (!id->lot_number) {
                 if (!id->wafer_coordinate) {
                     peers[x] = *input;
-                    return true;
+                    return x;
                 }
 
             }
@@ -68,7 +84,7 @@ bool mcu_uid_insert_first_empty(Mcu_uid * input) {
     }
     log_error(EC_COMM_PEER_LIMIT_EXCEEDED, 'm');
     //ERROR when could not write
-    return false;
+    return 0xFFFF;
 }
 
 /**
@@ -120,16 +136,17 @@ bool mcu_uid_increment_count(u16 local_id, Mcu_uid * input) {
     return found;
 }
 
-void send_uart(u8 data) {
-    send_data_uart_4(data);
-    send_data_uart_3(data);
-    send_data_uart_2(data);
-    send_data_uart_1(data);
+void send_uart(u8 data, u8 skip_port) {
+    if (skip_port != 1) send_data_uart_1(data);
+    if (skip_port != 2) send_data_uart_2(data);
+    if (skip_port != 3) send_data_uart_3(data);
+    if (skip_port != 4) send_data_uart_4(data);
+
 }
 
-void send_intercom(u8 * data, u16 length) {
+void send_intercom(u8 * data, u16 length, u8 skip_port) {
 
-    send_on_the_fly(data, length, &send_uart);
+    send_on_the_fly(data, length, &send_uart, skip_port);
 
 }
 
@@ -149,19 +166,7 @@ void icom_send_control_change(Control_change * input) {
 }
 
 void icom_send_button_press(Button_press * input) {
-    //  SERIALIZE(button_press)
-    Mcu_uid uid = get_uid_and_increment_counter();
-    u8* uid_byte = (u8*) &uid;
-    u8 send[16 + 1 + (sizeof(Mcu_uid))];
-    for (u32 x = 0; x < ((sizeof(Mcu_uid))); x++) {
-        send[x] = uid_byte[x];
-    }
-    send[(sizeof(Mcu_uid))] = MT_button_press;
-    u8 struct_size = message_size[MT_button_press];
-    for (u32 x = 0; x < (struct_size); x++) {
-        send[x + 1 + (sizeof(Mcu_uid))] = ((u8*) input)[x];
-    }
-    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)));
+    SERIALIZE(button_press)
 }
 
 void icom_send_led_update(Led_update * input) {
@@ -171,13 +176,14 @@ void icom_send_led_update(Led_update * input) {
 /**
  * This will read structs, there can be may structs following each other
  */
-void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
+void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer, u8 source_port) {
     bool in_process = false;
     Message_type processing = MT_ping;
     u8 bytes_remaining = 0;
     u8 byte_counter = 0;
     u8 sender_id_bytes_left = sizeof(Mcu_uid);
     bool do_processing = false;
+    Mcu_uid * peer = NULL;
 
     loop(i, size)
     {
@@ -191,11 +197,19 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             u16 index = mcu_uid_get_index(&receive_buffer->uid);
             //This means it is a new one, so we need to add it.
             if (index == 0xFFFF) { //new index
-                mcu_uid_insert_first_empty(&receive_buffer->uid);
-                do_processing = true;
+                index = mcu_uid_insert_first_empty(&receive_buffer->uid);
+                if (index == 0xFFFF) {
+                    //Out of peers, we don't know who sent this, ignore
+                    do_processing = false;
+
+                } else {
+                    peer = &peers[index];
+                    do_processing = true;
+                }
             } else {
                 //If we already know this pear check if it's not a duplicate message
                 do_processing = mcu_uid_increment_count(index, &receive_buffer->uid);
+                peer = &peers[index];
             }
 
             if (processing >= 8) {
@@ -221,13 +235,7 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer) {
             switch (processing) {
             case MT_ping:
                 break;
-            case MT_control_change:
-                ((u8*) &receive_buffer->buffer.control_change)[byte_counter++] = buffer[i];
-                if (byte_counter >= message_size[receive_buffer->type]) {
-                    icom_receive_control_change(receive_buffer->buffer.control_change);
-                }
-                break;
-            //DESERIALIZE_CASE(control_change)
+            DESERIALIZE_CASE(control_change)
                             DESERIALIZE_CASE(button_press)
                             DESERIALIZE_CASE(led_update)
                             default:
