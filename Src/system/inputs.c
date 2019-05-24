@@ -80,6 +80,8 @@ inline void process_encoder(Encoder_data * encoder) {
             encoder->reset_encoder = true;
         }
     }
+
+    process_encoder_button(encoder);
 }
 
 /**

@@ -5,16 +5,21 @@
 #include "../util/safe_array.h"
 
 #define DO_FORWARD true
-#define SERIALIZE_FORWARD(MCU_UID_PTR, STRUCT_NAME, STRUCT_VARIABLE, SKIP_PORT) \
+#define SERIALIZE_BASE(MCU_UID_PTR, STRUCT_NAME, STRUCT_VARIABLE, SKIP_PORT, SEND_FUNCTION) \
+{ \
     u8* uid_byte = (u8*)(MCU_UID_PTR); \
-    u8  send[ICOM_LARGEST_STRUCT + 1 + (sizeof(Mcu_uid))]; \
+    u8  send[sizeof(Icom_serialization_buffer) + 1 + (sizeof(Mcu_uid))]; \
     loop(x, (sizeof(Mcu_uid))) {send[x] = uid_byte[x]; } \
     send[(sizeof(Mcu_uid))] =  MT_ ## STRUCT_NAME; \
     u8 struct_size = message_size[MT_ ## STRUCT_NAME]; \
     loop(x, struct_size) { \
         send[x + 1 + (sizeof(Mcu_uid))] = ((u8* ) STRUCT_VARIABLE)[x];  \
     }\
-    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)), SKIP_PORT);
+    SEND_FUNCTION(send, struct_size + 1 + (sizeof(Mcu_uid)), SKIP_PORT); \
+}
+
+#define SERIALIZE_FORWARD(MCU_UID_PTR, STRUCT_NAME, STRUCT_VARIABLE, SKIP_PORT) \
+        SERIALIZE_BASE(MCU_UID_PTR, STRUCT_NAME, STRUCT_VARIABLE, SKIP_PORT, send_intercom)
 
 #define SERIALIZE(STRUCT_NAME) \
     Mcu_uid uid = get_uid_and_increment_counter(); \
@@ -39,10 +44,18 @@
                 }\
     break;
 
+Mcu_uid peers_on_port[PORT_COUNT] = { 0 };
 Mcu_uid peers[MAX_PEERS] = { 0 };
 
 u8 message_size[8] = {
-        0, sizeof(Control_change), sizeof(Button_press), sizeof(Led_update)
+        0,
+        sizeof(Control_change),
+        sizeof(Button_press),
+        sizeof(Led_update),
+        1,
+        sizeof(Address_response),
+        sizeof(Broadcast_request),
+        sizeof(Broadcast_response)
 };
 /* This value is chosen, so that this will override any other current code, and will overflow  */
 #define MESSAGE_COUNT_RESET 0xFFFFFFFF
@@ -137,6 +150,7 @@ bool mcu_uid_increment_count(u16 local_id, Mcu_uid * input) {
 }
 
 void send_uart(u8 data, u8 skip_port) {
+
     if (skip_port != 1) send_data_uart_1(data);
     if (skip_port != 2) send_data_uart_2(data);
     if (skip_port != 3) send_data_uart_3(data);
@@ -144,10 +158,20 @@ void send_uart(u8 data, u8 skip_port) {
 
 }
 
+void send_uart_single(u8 data, u8 port_num) {
+    if (port_num == 1) send_data_uart_1(data);
+    if (port_num == 2) send_data_uart_2(data);
+    if (port_num == 3) send_data_uart_3(data);
+    if (port_num == 4) send_data_uart_4(data);
+
+}
+
+void send_intercom_direct(u8 * data, u16 length, u8 address_port) {
+    send_on_the_fly(data, length, &send_uart_single, address_port);
+}
+
 void send_intercom(u8 * data, u16 length, u8 skip_port) {
-
     send_on_the_fly(data, length, &send_uart, skip_port);
-
 }
 
 Mcu_uid get_uid_and_increment_counter() {
@@ -172,7 +196,31 @@ void icom_send_button_press(Button_press * input) {
 void icom_send_led_update(Led_update * input) {
     SERIALIZE(led_update);
 }
+void icom_send_address_request() {
+    Generic_getter empty = { 0 };
+    Generic_getter * input = &empty;
+    SERIALIZE(address_request);
+}
 
+void icom_send_broadcast_request() {
+    Broadcast_request empty = { 0xF0 };
+    Broadcast_request * input = &empty;
+    SERIALIZE(broadcast_request);
+
+}
+void icom_send_broadcast_response() {
+    Mcu_uid uid = get_uid_and_increment_counter();
+    Broadcast_response resp = { 0xF0, { { 0 } } };
+    loop(port, PORT_COUNT)
+    {
+        resp.peers[port] = peers_on_port[port];
+    }
+    SERIALIZE_BASE(&uid, broadcast_response, &resp, 0xFF, send_intercom)
+}
+
+void icom_receive_broadcast_response(Mcu_uid * origin, Broadcast_response br) {
+
+}
 /**
  * This will read structs, there can be may structs following each other
  */
@@ -235,6 +283,45 @@ void icom_read_message(u8 * buffer, u16 size, Icom_send * receive_buffer, u8 sou
             switch (processing) {
             case MT_ping:
                 break;
+            case MT_address_request:
+                {
+                Mcu_uid uid = get_uid_and_increment_counter();
+                Address_response resp = { source_port, 0 };
+                SERIALIZE_BASE(&uid, address_response, &resp, source_port, send_intercom_direct)
+            }
+                break;
+            case MT_address_response:
+                peers_on_port[source_port - 1] = *peer;
+                break;
+            case MT_broadcast_request:
+                {
+                FORWARD(broadcast_request, source_port)
+
+                icom_send_broadcast_response();
+            }
+                break;
+            case MT_broadcast_response:
+
+                DESERIALIZE(broadcast_response)
+
+                    u8* uid_byte = (u8*) (peer);
+                    u8 send[sizeof(Icom_serialization_buffer) + 1 + (sizeof(Mcu_uid))];
+                    loop(x, (sizeof(Mcu_uid)))
+                    {
+                        send[x] = uid_byte[x];
+                    }
+                    send[(sizeof(Mcu_uid))] = MT_broadcast_response;
+                    u8 struct_size = message_size[MT_broadcast_response];
+                    loop(x, struct_size)
+                    {
+                        send[x + 1 + (sizeof(Mcu_uid))] =
+                                ((u8*) &receive_buffer->buffer.broadcast_response)[x];
+                    }
+                    send_intercom(send, struct_size + 1 + (sizeof(Mcu_uid)), source_port);
+                }
+
+                break;
+                //       DESERIALIZE_CASE(broadcast_response)
             DESERIALIZE_CASE(control_change)
                             DESERIALIZE_CASE(button_press)
                             DESERIALIZE_CASE(led_update)

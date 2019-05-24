@@ -41,6 +41,10 @@ void test_receive_button_press(Mcu_uid * origin, Button_press bp) {
 void test_receive_led_update(Mcu_uid * origin, Led_update lu) {
     azz++;
 }
+
+void test_receive_broadcast_response(Mcu_uid * origin, Broadcast_response br) {
+    azz++;
+}
 void read_uart_rx_buffer() {
     Circular_buffer * cb[4] = {
             &uart_1_rx_buffer,
@@ -162,8 +166,9 @@ u64 aha = 0;
 void main_thread() {
 
     init_tasks();
-    printf("\r\nSTARTING UP %d\r\n", 4);
+    //printf("\r\nSTARTING UP %d\r\n", 4);
 
+    icom_send_address_request();
     loop(x,5)
     {
         Control_change ch = { x, x * 2 };

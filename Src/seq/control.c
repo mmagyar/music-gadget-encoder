@@ -78,6 +78,10 @@ void process_control() {
 
         s16 * step = &encoders[x].encoder_step;
         bool changed = *step ? true : false;
+        while(encoders[x].button_presses){
+            encoders[x].button_presses--;
+            icom_send_broadcast_request();
+        }
         if (encoder->type == CT_INCREMENT) {
             while (*step != 0) {
                 if (*step > 0) {

@@ -93,7 +93,6 @@ UART_TX(3)
 UART_RX(4)
 UART_TX(4)
 
-
 /**
  * @brief This function handles USART1 global interrupt / USART1 wake-up interrupt through EXTI line 25.
  */
